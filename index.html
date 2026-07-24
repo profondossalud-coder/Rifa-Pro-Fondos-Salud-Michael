@@ -142,7 +142,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { getDatabase, ref, onValue, update, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAkO4NC8uZOLyKnUzkEPTSWE95gslYaWes",
@@ -234,18 +234,23 @@
           return;
         }
 
-        for (let num of seleccion) {
-          await set(ref(db, `boletos_ocupados/${num}`), {
+        const nuevasReservas = {};
+        const timestamp = new Date().toISOString();
+        seleccion.forEach(num => {
+          nuevasReservas[`boletos_ocupados/${num}`] = {
             nombre: nombre,
             telefono: telefono,
-            timestamp: new Date().toISOString()
-          });
-        }
+            timestamp: timestamp
+          };
+        });
+
+        await update(ref(db), nuevasReservas);
 
         const numerosTexto = seleccion.map(x => String(x).padStart(3, '0')).join(', ');
         const total = seleccion.length * 10000;
 
-        const msg = `¡Hola! 👋%0A%0AHe reservado el/los número(s): *${numerosTexto}*%0A👤 *Nombre:* ${encodeURIComponent(nombre)}%0A📞 *Teléfono:* ${encodeURIComponent(telefono)}%0A💰 *Total a pagar:* $${total.toLocaleString('es-CO')} COP%0A%0A¡Gracias por tu apoyo! 🙏, para registrar tu colaboración y comprobante llena el siguiente formulario:%0Ahttps://forms.gle/CCGPBw3zJn9YK78f6`;
+        // Mensaje con el nuevo enlace de Google Forms
+        const msg = `¡Hola! 👋%0A%0AHe reservado el/los número(s): *${numerosTexto}*%0A👤 *Nombre:* ${encodeURIComponent(nombre)}%0A📞 *Teléfono:* ${encodeURIComponent(telefono)}%0A💰 *Total a pagar:* $${total.toLocaleString('es-CO')} COP%0A%0A¡Gracias por tu apoyo! 🙏, para registrar tu colaboración y comprobante llena el siguiente formulario:%0Ahttps://forms.gle/1hpjCAmT8jW2qJmZ7`;
 
         window.open('https://wa.me/584247384214?text=' + msg, '_blank');
 
@@ -253,7 +258,7 @@
 
       } catch (e) {
         console.error(e);
-        alert('Ocurrió un error al guardar los números. Revisa tu conexión.');
+        alert('Ocurrió un error de red al procesar tu solicitud. Por favor intenta de nuevo.');
       } finally {
         btn.disabled = false;
         btn.textContent = '📲 Reservar y enviar por WhatsApp';
