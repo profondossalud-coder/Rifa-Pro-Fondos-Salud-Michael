@@ -188,7 +188,7 @@
       <button id="btnReservar">Reservar y continuar al pago</button>
     </div>
 
-    <!-- RESUMEN FINAL Y BOTÓN DE WHATSAPP (Aparece tras pulsar Reservar) -->
+    <!-- RESUMEN FINAL Y BOTÓN DE WHATSAPP -->
     <div class="card" id="pay" style="display:none">
       <p id="total" style="font-size: 1.05rem; margin-top: 0;"></p>
       <button id="wa" class="btn-wa">📲 Enviar comprobante por WhatsApp</button>
@@ -258,8 +258,8 @@
 
       document.getElementById('total').innerHTML = '<b>Números seleccionados:</b> ' + numerosTexto + '<br><b>Total a pagar:</b> $' + total.toLocaleString('es-CO') + ' COP';
 
-      // 3. Crear mensaje de WhatsApp
-      const msg = `¡Hola! 👋%0A%0AQuiero reservar el/los número(s): *${numerosTexto}*%0A👤 *Nombre:* ${encodeURIComponent(n)}%0A📞 *Teléfono:* ${encodeURIComponent(t)}%0A💰 *Total a pagar:* $${total.toLocaleString('es-CO')} COP%0A%0A¡Gracias por tu apoyo! 🙏, para registrar tu colaboración y comprobante llena el siguiente formulario:%0Ahttps://forms.gle/5pcqk1zsRzxMYBQA6`;
+      // 3. Crear mensaje de WhatsApp con el nuevo enlace de Google Forms
+      const msg = `¡Hola! 👋%0A%0AQuiero reservar el/los número(s): *${numerosTexto}*%0A👤 *Nombre:* ${encodeURIComponent(n)}%0A📞 *Teléfono:* ${encodeURIComponent(t)}%0A💰 *Total a pagar:* $${total.toLocaleString('es-CO')} COP%0A%0A¡Gracias por tu apoyo! 🙏, para registrar tu colaboración y comprobante llena el siguiente formulario:%0Ahttps://forms.gle/jzAXUfk6ys6RJm4D9`;
       
       document.getElementById('wa').onclick = () => location.href = 'https://wa.me/584247384214?text=' + msg;
 
