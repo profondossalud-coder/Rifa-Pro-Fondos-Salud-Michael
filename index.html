@@ -1,1 +1,265 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🎟️ Rifa 1000</title>
+  
+  <!-- Meta tags para preview en WhatsApp/Redes -->
+  <meta property="og:title" content="🎟️ Rifa 1000 - Elige tu número">
+  <meta property="og:description" content="Valor: $10.000 COP por número. Selecciona tus números y reserva en línea.">
+  <meta property="og:type" content="website">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 16px;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 10px;
+      color: #1a1a1a;
+    }
+    .card {
+      background: #ffffff;
+      padding: 18px;
+      border-radius: 12px;
+      margin: 14px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .price-tag {
+      font-size: 1.1rem;
+      color: #2e7d32;
+      background: #e8f5e9;
+      padding: 8px 12px;
+      border-radius: 8px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+      gap: 6px;
+      max-height: 420px;
+      overflow-y: auto;
+      padding: 6px;
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+    }
+    .num {
+      padding: 10px 2px;
+      text-align: center;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      user-select: none;
+      font-size: 0.85rem;
+      font-weight: bold;
+      transition: transform 0.1s, opacity 0.2s;
+    }
+    .num:active {
+      transform: scale(0.95);
+    }
+    .free {
+      background: #2e7d32;
+    }
+    .taken {
+      background: #d32f2f;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    .sel {
+      background: #f57c00;
+      box-shadow: 0 0 0 2px #fff, 0 0 0 4px #f57c00;
+    }
+    button {
+      padding: 12px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #1976d2;
+      color: #fff;
+      font-weight: bold;
+      width: 100%;
+      font-size: 1rem;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #1565c0;
+    }
+    .btn-wa {
+      background: #25d366 !important;
+      color: #ffffff;
+      margin-top: 10px;
+    }
+    .btn-wa:hover {
+      background: #128c7e !important;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0 14px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    input:focus {
+      outline: none;
+      border-color: #1976d2;
+    }
+    .legend {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+      font-size: 0.85rem;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .box {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>🎟️ Rifa 1000</h1>
+
+    <div class="card">
+      <div class="price-tag"><b>Valor:</b> $10.000 COP por número</div>
+      <p style="margin: 4px 0 12px 0;">Selecciona uno o varios números disponibles en el tablero:</p>
+      
+      <div class="legend">
+        <div class="legend-item"><div class="box free"></div> Disponible</div>
+        <div class="legend-item"><div class="box sel"></div> Seleccionado</div>
+        <div class="legend-item"><div class="box taken"></div> Ocupado</div>
+      </div>
+
+      <div id="grid"></div>
+    </div>
+
+    <div class="card">
+      <label for="nombre"><b>Nombre completo:</b></label>
+      <input id="nombre" placeholder="Ej: María Pérez" autocomplete="name">
+      
+      <label for="tel"><b>Teléfono:</b></label>
+      <input id="tel" type="tel" placeholder="Ej: 04141234567" autocomplete="tel">
+      
+      <button id="btnReservar">Reservar y continuar al pago</button>
+    </div>
+
+    <div class="card" id="pay" style="display:none">
+      <h3>💳 Métodos de Pago</h3>
+      <p><b>Efectivo</b></p>
+      <p>
+        <b>Pago Móvil</b><br>
+        Banco: Mercantil<br>
+        C.I.: 21.003.960<br>
+        Teléfono: 04147179001
+      </p>
+      <hr style="border: 0; border-top: 1px solid #eee; margin: 12px 0;">
+      <p id="total" style="font-size: 1.05rem;"></p>
+      <button id="wa" class="btn-wa">📲 Enviar comprobante por WhatsApp</button>
+    </div>
+  </div>
+
+  <!-- Firebase App & Analytics via CDN -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAkO4NC8uZOLyKnUzkEPTSWE95gslYaWes",
+      authDomain: "rifa-app-9a924.firebaseapp.com",
+      projectId: "rifa-app-9a924",
+      storageBucket: "rifa-app-9a924.firebasestorage.app",
+      messagingSenderId: "789098814555",
+      appId: "1:789098814555:web:4a5ed52016f12e24dc737e",
+      measurementId: "G-P4P3M54HSN"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+
+    // Estado inicial de la Rifa
+    const bloqueados = new Set([7, 15, 55, 140, 193, 211, 217, 325, 411, 416, 422, 583, 935, 999]);
+    let seleccion = [];
+    const g = document.getElementById('grid');
+
+    // Generar cuadrícula (000 a 999)
+    for (let i = 0; i < 1000; i++) {
+      let d = document.createElement('div');
+      d.className = 'num ' + (bloqueados.has(i) ? 'taken' : 'free');
+      d.textContent = String(i).padStart(3, '0');
+
+      d.onclick = () => {
+        if (bloqueados.has(i)) return;
+        const idx = seleccion.indexOf(i);
+        if (idx >= 0) {
+          seleccion.splice(idx, 1);
+          d.className = 'num free';
+        } else {
+          seleccion.push(i);
+          d.className = 'num sel';
+        }
+      };
+      g.appendChild(d);
+    }
+
+    function reservar() {
+      const n = document.getElementById('nombre').value.trim();
+      const t = document.getElementById('tel').value.trim();
+
+      if (!n || !t || seleccion.length === 0) {
+        alert('Por favor completa tu nombre, teléfono y selecciona al menos un número.');
+        return;
+      }
+
+      // 1. Formatear números y calcular total
+      const numerosTexto = seleccion.map(x => String(x).padStart(3, '0')).join(', ');
+      const total = seleccion.length * 10000;
+
+      // 2. Mostrar módulo de pago y resumen
+      const paySection = document.getElementById('pay');
+      paySection.style.display = 'block';
+      paySection.scrollIntoView({ behavior: 'smooth' });
+
+      document.getElementById('total').innerHTML = '<b>Números seleccionados:</b> ' + numerosTexto + '<br><b>Total a pagar:</b> $' + total.toLocaleString('es-CO') + ' COP';
+
+      // 3. Crear mensaje exacto para WhatsApp con codificación URL
+      const msg = `Hola.%0AQuiero reservar los números: ${numerosTexto}%0ANombre: ${encodeURIComponent(n)}%0ATeléfono: ${encodeURIComponent(t)}%0ATotal: $${total} COP.%0A%0AAdjunta el comprobante de pago en el siguiente formulario:%0Ahttps://forms.gle/5pcqk1zsRzxMYBQA6`;
+      
+      document.getElementById('wa').onclick = () => location.href = 'https://wa.me/584247384214?text=' + msg;
+
+      // 4. Bloquear visualmente los números seleccionados
+      seleccion.forEach(num => {
+        bloqueados.add(num);
+        const casilla = g.children[num];
+        casilla.className = 'num taken';
+      });
+
+      // 5. Vaciar selección
+      seleccion = [];
+    }
+
+    document.getElementById('btnReservar').addEventListener('click', reservar);
+  </script>
+</body>
+</html>
