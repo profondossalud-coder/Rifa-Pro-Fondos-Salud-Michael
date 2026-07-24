@@ -182,9 +182,9 @@
         Teléfono: 04147179001
       </p>
 
-      <!-- Tasa Euro del día automática -->
+      <!-- Tasa Euro del día (Texto fijo) -->
       <div class="euro-box" id="tasaEuro">
-        💶 <b>Tasa Euro del día (BCV):</b> Cargando...
+        💶 <b>Tasa euro del día.</b>
       </div>
 
       <hr style="border: 0; border-top: 1px solid #eee; margin: 16px 0 12px 0;">
@@ -212,19 +212,6 @@
 
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
-
-    // Consulta automática de la Tasa Euro BCV
-    async function obtenerTasaEuro() {
-      const euroBox = document.getElementById('tasaEuro');
-      try {
-        const response = await fetch('https://ve.dolarapi.com/v1/dolares/euro');
-        const data = await response.json();
-        euroBox.innerHTML = `💶 <b>Tasa Euro del día (BCV):</b> ${data.promedio.toFixed(2).replace('.', ',')} VES`;
-      } catch (error) {
-        euroBox.innerHTML = `💶 <b>Tasa Euro del día:</b> Según tasa oficial BCV`;
-      }
-    }
-    obtenerTasaEuro();
 
     // Estado inicial de la Rifa
     const bloqueados = new Set();
@@ -271,7 +258,7 @@
 
       document.getElementById('total').innerHTML = '<b>Números seleccionados:</b> ' + numerosTexto + '<br><b>Total a pagar:</b> $' + total.toLocaleString('es-CO') + ' COP';
 
-      // 3. Crear mensaje de WhatsApp con el texto exacto requerido
+      // 3. Crear mensaje de WhatsApp con la plantilla exacta requerida
       const msg = `¡Hola! 👋%0A%0AQuiero reservar el/los número(s): *${numerosTexto}*%0A👤 *Nombre:* ${encodeURIComponent(n)}%0A📞 *Teléfono:* ${encodeURIComponent(t)}%0A💰 *Total a pagar:* $${total.toLocaleString('es-CO')} COP%0A%0A¡Gracias por tu apoyo! 🙏, para registrar tu colaboración y comprobante llena el siguiente formulario:%0Ahttps://forms.gle/5pcqk1zsRzxMYBQA6`;
       
       document.getElementById('wa').onclick = () => location.href = 'https://wa.me/584247384214?text=' + msg;
