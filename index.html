@@ -248,7 +248,8 @@
         const numerosTexto = seleccion.map(x => String(x).padStart(3, '0')).join(', ');
         const total = seleccion.length * 10000;
 
-        const msg = `¡Hola! 👋%0A%0AHe reservado el/los número(s): *${numerosTexto}*%0A👤 *Nombre:* ${encodeURIComponent(nombre)}%0A📞 *Teléfono:* ${encodeURIComponent(telefono)}%0A💰 *Total a pagar:* $${total.toLocaleString('es-CO')} COP%0A%0A¡Gracias por tu apoyo! 🙏, para registrar tu colaboración y comprobante llena el siguiente formulario:%0Ahttps://forms.gle/jzAXUfk6ys6RJm4D9`;
+        // Mensaje directo a WhatsApp con el enlace de Google Forms actualizado
+        const msg = `¡Hola! 👋%0A%0AHe reservado el/los número(s): *${numerosTexto}*%0A👤 *Nombre:* ${encodeURIComponent(nombre)}%0A📞 *Teléfono:* ${encodeURIComponent(telefono)}%0A💰 *Total a pagar:* $${total.toLocaleString('es-CO')} COP%0A%0A¡Gracias por tu apoyo! 🙏, para registrar tu colaboración y comprobante llena el siguiente formulario:%0Ahttps://forms.gle/CCGPBw3zJn9YK78f6`;
 
         window.open('https://wa.me/584247384214?text=' + msg, '_blank');
 
