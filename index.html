@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>🎟️ Rifa 1000</title>
   
-  <!-- Meta tags para preview en WhatsApp/Redes -->
+  <!-- Meta tags para vista previa al compartir en WhatsApp -->
   <meta property="og:title" content="🎟️ Rifa 1000 - Elige tu número">
   <meta property="og:description" content="Valor: $10.000 COP por número. Selecciona tus números y reserva en línea.">
   <meta property="og:type" content="website">
@@ -98,6 +98,10 @@
     button:hover {
       background: #1565c0;
     }
+    button:disabled {
+      background: #9e9e9e;
+      cursor: not-allowed;
+    }
     .btn-wa {
       background: #25d366 !important;
       color: #ffffff;
@@ -159,9 +163,9 @@
         <div class="legend-item"><div class="box taken"></div> Ocupado</div>
       </div>
 
-      <div id="grid"></div>
+      <div id="grid">Cargando números...</div>
 
-      <!-- MÉTODOS DE PAGO VISIBLES ANTES DE RESERVAR -->
+      <!-- MÉTODOS DE PAGO -->
       <div class="payment-info">
         <h4 style="margin: 0 0 8px 0; color: #1976d2;">💳 Métodos de Pago</h4>
         <p style="margin: 2px 0;"><b>Efectivo</b></p>
@@ -195,14 +199,16 @@
     </div>
   </div>
 
-  <!-- Firebase App & Analytics via CDN -->
+  <!-- CONEXIÓN A FIREBASE REALTIME DATABASE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+    import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
+    // Configuración de tu proyecto en Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyAkO4NC8uZOLyKnUzkEPTSWE95gslYaWes",
       authDomain: "rifa-app-9a924.firebaseapp.com",
+      databaseURL: "https://rifa-app-9a924-default-rtdb.firebaseio.com",
       projectId: "rifa-app-9a924",
       storageBucket: "rifa-app-9a924.firebasestorage.app",
       messagingSenderId: "789098814555",
@@ -211,67 +217,143 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
+    const db = getDatabase(app);
 
-    // Estado inicial de la Rifa
     const bloqueados = new Set();
     let seleccion = [];
     const g = document.getElementById('grid');
 
-    // Generar cuadrícula (000 a 999)
-    for (let i = 0; i < 1000; i++) {
-      let d = document.createElement('div');
-      d.className = 'num ' + (bloqueados.has(i) ? 'taken' : 'free');
-      d.textContent = String(i).padStart(3, '0');
+    // 1. Crear la cuadrícula de 1000 números
+    function construirTablero() {
+      g.innerHTML = '';
+      for (let i = 0; i < 1000; i++) {
+        let d = document.createElement('div');
+        d.id = 'num-' + i;
+        d.className = 'num ' + (bloqueados.has(i) ? 'taken' : 'free');
+        d.textContent = String(i).padStart(3, '0');
 
-      d.onclick = () => {
-        if (bloqueados.has(i)) return;
-        const idx = seleccion.indexOf(i);
-        if (idx >= 0) {
-          seleccion.splice(idx, 1);
-          d.className = 'num free';
-        } else {
-          seleccion.push(i);
-          d.className = 'num sel';
-        }
-      };
-      g.appendChild(d);
+        d.onclick = () => {
+          if (bloqueados.has(i)) return;
+          
+          const idx = seleccion.indexOf(i);
+          if (idx >= 0) {
+            seleccion.splice(idx, 1);
+            d.className = 'num free';
+          } else {
+            seleccion.push(i);
+            d.className = 'num sel';
+          }
+        };
+        g.appendChild(d);
+      }
     }
 
-    function reservar() {
+    // 2. Escuchar cambios en tiempo real desde Firebase
+    const boletosOcupadosRef = ref(db, 'boletos_ocupados');
+    
+    onValue(boletosOcupadosRef, (snapshot) => {
+      bloqueados.clear();
+      const data = snapshot.val();
+      
+      if (data) {
+        Object.keys(data).forEach(numeroStr => {
+          bloqueados.add(parseInt(numeroStr, 10));
+        });
+      }
+      
+      if (g.children.length !== 1000) {
+        construirTablero();
+      } else {
+        for (let i = 0; i < 1000; i++) {
+          const casilla = document.getElementById('num-' + i);
+          if (casilla) {
+            if (bloqueados.has(i)) {
+              casilla.className = 'num taken';
+              const sIdx = seleccion.indexOf(i);
+              if (sIdx >= 0) seleccion.splice(sIdx, 1);
+            } else if (!seleccion.includes(i)) {
+              casilla.className = 'num free';
+            }
+          }
+        }
+      }
+    });
+
+    // 3. Proceso de reserva
+    async function reservar() {
+      const btn = document.getElementById('btnReservar');
       const n = document.getElementById('nombre').value.trim();
       const t = document.getElementById('tel').value.trim();
 
-      if (!n || !t || seleccion.length === 0) {
-        alert('Por favor completa tu nombre, teléfono y selecciona al menos un número.');
+      if (!n || !t) {
+        alert('Por favor ingresa tu nombre y número de teléfono.');
         return;
       }
 
-      // 1. Formatear números y calcular total
-      const numerosTexto = seleccion.map(x => String(x).padStart(3, '0')).join(', ');
-      const total = seleccion.length * 10000;
+      if (seleccion.length === 0) {
+        alert('Por favor selecciona al menos un número del tablero.');
+        return;
+      }
 
-      // 2. Mostrar resumen y botón de WhatsApp
-      const paySection = document.getElementById('pay');
-      paySection.style.display = 'block';
-      paySection.scrollIntoView({ behavior: 'smooth' });
+      btn.disabled = true;
+      btn.textContent = 'Guardando reserva...';
 
-      document.getElementById('total').innerHTML = '<b>Números seleccionados:</b> ' + numerosTexto + '<br><b>Total a pagar:</b> $' + total.toLocaleString('es-CO') + ' COP';
+      try {
+        // Verificar disponibilidad actual antes de guardar
+        const snapshot = await get(boletosOcupadosRef);
+        const ocupadosActuales = snapshot.val() || {};
+        
+        let algunoOcupado = false;
+        let numerosConflictivos = [];
+        
+        for (let num of seleccion) {
+          if (ocupadosActuales[num]) {
+            algunoOcupado = true;
+            numerosConflictivos.push(String(num).padStart(3, '0'));
+          }
+        }
+        
+        if (algunoOcupado) {
+          alert(`Los siguientes números fueron reservados recién por otra persona: ${numerosConflictivos.join(', ')}. Por favor elige otros.`);
+          btn.disabled = false;
+          btn.textContent = 'Reservar y continuar al pago';
+          return;
+        }
 
-      // 3. Crear mensaje de WhatsApp con el nuevo enlace de Google Forms
-      const msg = `¡Hola! 👋%0A%0AQuiero reservar el/los número(s): *${numerosTexto}*%0A👤 *Nombre:* ${encodeURIComponent(n)}%0A📞 *Teléfono:* ${encodeURIComponent(t)}%0A💰 *Total a pagar:* $${total.toLocaleString('es-CO')} COP%0A%0A¡Gracias por tu apoyo! 🙏, para registrar tu colaboración y comprobante llena el siguiente formulario:%0Ahttps://forms.gle/jzAXUfk6ys6RJm4D9`;
-      
-      document.getElementById('wa').onclick = () => location.href = 'https://wa.me/584247384214?text=' + msg;
+        // Guardar cada número seleccionado
+        for (let num of seleccion) {
+          await set(ref(db, `boletos_ocupados/${num}`), {
+            nombre: n,
+            telefono: t,
+            timestamp: new Date().toISOString()
+          });
+        }
 
-      // 4. Bloquear visualmente los números seleccionados
-      seleccion.forEach(num => {
-        bloqueados.add(num);
-        const casilla = g.children[num];
-        casilla.className = 'num taken';
-      });
+        // Formatear mensaje para WhatsApp
+        const numerosTexto = seleccion.map(x => String(x).padStart(3, '0')).join(', ');
+        const total = seleccion.length * 10000;
 
-      // 5. Vaciar selección
-      seleccion = [];
+        const paySection = document.getElementById('pay');
+        paySection.style.display = 'block';
+        paySection.scrollIntoView({ behavior: 'smooth' });
+
+        document.getElementById('total').innerHTML = '<b>Números reservados:</b> ' + numerosTexto + '<br><b>Total a pagar:</b> $' + total.toLocaleString('es-CO') + ' COP';
+
+        const msg = `¡Hola! 👋%0A%0AQuiero reservar el/los número(s): *${numerosTexto}*%0A👤 *Nombre:* ${encodeURIComponent(n)}%0A📞 *Teléfono:* ${encodeURIComponent(t)}%0A💰 *Total a pagar:* $${total.toLocaleString('es-CO')} COP%0A%0A¡Gracias por tu apoyo! 🙏, para registrar tu colaboración y comprobante llena el siguiente formulario:%0Ahttps://forms.gle/jzAXUfk6ys6RJm4D9`;
+        
+        document.getElementById('wa').onclick = () => {
+          window.open('https://wa.me/584247384214?text=' + msg, '_blank');
+        };
+
+        seleccion = [];
+
+      } catch (e) {
+        console.error("Error al guardar reserva: ", e);
+        alert("Hubo un detalle al guardar la reserva. Revisa tu conexión e intenta de nuevo.");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Reservar y continuar al pago';
+      }
     }
 
     document.getElementById('btnReservar').addEventListener('click', reservar);
