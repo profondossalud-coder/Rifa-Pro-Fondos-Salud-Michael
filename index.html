@@ -134,12 +134,12 @@
       height: 14px;
       border-radius: 4px;
     }
-    .euro-box {
-      background: #eef3f8;
-      padding: 10px 12px;
-      border-radius: 8px;
-      margin-top: 12px;
+    .payment-info {
+      background: #f8f9fa;
       border-left: 4px solid #1976d2;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 16px;
       font-size: 0.95rem;
     }
   </style>
@@ -160,8 +160,24 @@
       </div>
 
       <div id="grid"></div>
+
+      <!-- MÉTODOS DE PAGO VISIBLES ANTES DE RESERVAR -->
+      <div class="payment-info">
+        <h4 style="margin: 0 0 8px 0; color: #1976d2;">💳 Métodos de Pago</h4>
+        <p style="margin: 2px 0;"><b>Efectivo</b></p>
+        <p style="margin: 2px 0;">
+          <b>Pago Móvil</b><br>
+          Banco: Mercantil<br>
+          C.I.: 21.003.960<br>
+          Teléfono: 04147179001
+        </p>
+        <p style="margin: 6px 0 0 0; font-weight: bold; color: #2e7d32;">
+          💶 Tasa euro del día.
+        </p>
+      </div>
     </div>
 
+    <!-- FORMULARIO DE RESERVA -->
     <div class="card">
       <label for="nombre"><b>Nombre completo:</b></label>
       <input id="nombre" placeholder="Ej: María Pérez" autocomplete="name">
@@ -172,25 +188,9 @@
       <button id="btnReservar">Reservar y continuar al pago</button>
     </div>
 
+    <!-- RESUMEN FINAL Y BOTÓN DE WHATSAPP (Aparece tras pulsar Reservar) -->
     <div class="card" id="pay" style="display:none">
-      <h3>💳 Métodos de Pago</h3>
-      <p><b>Efectivo</b></p>
-      <p>
-        <b>Pago Móvil</b><br>
-        Banco: Mercantil<br>
-        C.I.: 21.003.960<br>
-        Teléfono: 04147179001
-      </p>
-
-      <!-- Tasa Euro del día (Texto fijo) -->
-      <div class="euro-box" id="tasaEuro">
-        💶 <b>Tasa euro del día.</b>
-      </div>
-
-      <hr style="border: 0; border-top: 1px solid #eee; margin: 16px 0 12px 0;">
-      <p id="total" style="font-size: 1.05rem;"></p>
-      
-      <!-- Botón de WhatsApp -->
+      <p id="total" style="font-size: 1.05rem; margin-top: 0;"></p>
       <button id="wa" class="btn-wa">📲 Enviar comprobante por WhatsApp</button>
     </div>
   </div>
@@ -251,14 +251,14 @@
       const numerosTexto = seleccion.map(x => String(x).padStart(3, '0')).join(', ');
       const total = seleccion.length * 10000;
 
-      // 2. Mostrar módulo de pago y resumen
+      // 2. Mostrar resumen y botón de WhatsApp
       const paySection = document.getElementById('pay');
       paySection.style.display = 'block';
       paySection.scrollIntoView({ behavior: 'smooth' });
 
       document.getElementById('total').innerHTML = '<b>Números seleccionados:</b> ' + numerosTexto + '<br><b>Total a pagar:</b> $' + total.toLocaleString('es-CO') + ' COP';
 
-      // 3. Crear mensaje de WhatsApp con la plantilla exacta requerida
+      // 3. Crear mensaje de WhatsApp
       const msg = `¡Hola! 👋%0A%0AQuiero reservar el/los número(s): *${numerosTexto}*%0A👤 *Nombre:* ${encodeURIComponent(n)}%0A📞 *Teléfono:* ${encodeURIComponent(t)}%0A💰 *Total a pagar:* $${total.toLocaleString('es-CO')} COP%0A%0A¡Gracias por tu apoyo! 🙏, para registrar tu colaboración y comprobante llena el siguiente formulario:%0Ahttps://forms.gle/5pcqk1zsRzxMYBQA6`;
       
       document.getElementById('wa').onclick = () => location.href = 'https://wa.me/584247384214?text=' + msg;
