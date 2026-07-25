@@ -164,10 +164,6 @@
       <input id="tel" type="tel" placeholder="Ej: 04141234567" autocomplete="tel">
       
       <button id="btnWa" class="btn-wa">📲 Reservar y enviar por WhatsApp</button>
-      
-      <p style="text-align: center; font-size: 0.85rem; color: #546e7a; margin-top: 10px; line-height: 1.3;">
-        Para confirmar tu reserva, se abrirá un formulario y te redirigirá luego a nuestro WhatsApp.
-      </p>
     </div>
   </div>
 
@@ -186,11 +182,9 @@
       measurementId: "G-P4P3M54HSN"
     };
 
-    // Configuración de fecha límite (21 de agosto de 2026 a las 21:50)
     const deadline = new Date("2026-08-21T21:50:00");
     const btn = document.getElementById('btnWa');
 
-    // Verificar si la rifa ya cerró
     function verificarCierre() {
       if (new Date() > deadline) {
         btn.disabled = true;
@@ -242,7 +236,6 @@
     });
 
     btn.addEventListener('click', async () => {
-      // Doble verificación al hacer clic
       if (new Date() > deadline) {
         alert('Lo sentimos, la rifa ha finalizado.');
         return;
@@ -282,6 +275,10 @@
           return;
         }
 
+        const numerosTexto = seleccion.map(x => String(x).padStart(3, '0')).join(', ');
+        const totalCOP = seleccion.length * 10000;
+        const totalUSD = seleccion.length * 3;
+
         const nuevasReservas = {};
         const timestamp = new Date().toISOString();
         seleccion.forEach(num => {
@@ -291,36 +288,39 @@
             timestamp: timestamp
           };
         });
-
         await update(ref(db), nuevasReservas);
 
-        const numerosTexto = seleccion.map(x => String(x).padStart(3, '0')).join(', ');
-        const totalCOP = seleccion.length * 10000;
-        const totalUSD = seleccion.length * 3;
+        const formActionUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdP90cVfchJqMyfYcxUCFYKcyNcH25auxYl7IQj9vubvfFpDQ/formResponse";
+        const formData = new FormData();
+        formData.append('entry.874598015', nombre);
+        formData.append('entry.1349990828', telefono);
+        formData.append('entry.866989850', numerosTexto);
+        formData.append('entry.939498665', 'WebRifa');
 
-        // URL de Google Forms
-        const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSdP90cVfchJqMyfYcxUCFYKcyNcH25auxYl7IQj9vubvfFpDQ/viewform?usp=pp_url&entry.874598015=${encodeURIComponent(nombre)}&entry.1349990828=${encodeURIComponent(telefono)}&entry.866989850=${encodeURIComponent(numerosTexto)}&entry.939498665=WebRifa`;
+        await fetch(formActionUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: formData
+        });
 
-        // Mensaje de WhatsApp
-        const msg = `¡Hola! 👋%0A%0AHe reservado el/los número(s): *${numerosTexto}*%0A👤 *Nombre:* ${encodeURIComponent(nombre)}%0A📞 *Teléfono:* ${encodeURIComponent(telefono)}%0A💰 *Total a pagar:* $${totalCOP.toLocaleString('es-CO')} COP / $${totalUSD} (A tasa del Euro del día)%0A%0A¡Muchas gracias por tu colaboración! Recuerda que tu número participa oficialmente al haber cancelado el valor del boleto.`;
-
-        window.open(formUrl, '_blank');
-        window.open('https://wa.me/584247384214?text=' + msg, '_blank');
+        // Mensaje restaurado a su texto original con la indicación del comprobante
+        const msg = `¡Hola! 👋%0A%0AHe reservado el/los número(s): *${numerosTexto}*%0A👤 *Nombre:* ${encodeURIComponent(nombre)}%0A📞 *Teléfono:* ${encodeURIComponent(telefono)}%0A💰 *Total a pagar:* $${totalCOP.toLocaleString('es-CO')} COP / $${totalUSD} (A tasa del Euro del día)%0A%0A¡Muchas gracias por tu colaboración! Recuerda que tu número participa oficialmente al haber cancelado el valor del boleto. Si hiciste transferencia, por favor enviar comprobante de pago.`;
 
         seleccion = [];
         document.getElementById('nombre').value = '';
         document.getElementById('tel').value = '';
 
+        window.location.href = 'https://wa.me/584247384214?text=' + msg;
+
       } catch (e) {
         console.error(e);
         alert('Ocurrió un error de red al procesar tu solicitud. Por favor intenta de nuevo.');
       } finally {
-        verificarCierre(); // Verificar nuevamente tras terminar la reserva
+        verificarCierre();
         if (!btn.disabled) btn.textContent = '📲 Reservar y enviar por WhatsApp';
       }
     });
 
-    // Ejecutar verificación al cargar la página
     verificarCierre();
   </script>
 </body>
