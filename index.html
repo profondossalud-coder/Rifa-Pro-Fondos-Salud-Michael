@@ -186,6 +186,18 @@
       measurementId: "G-P4P3M54HSN"
     };
 
+    // Configuración de fecha límite (21 de agosto de 2026 a las 21:50)
+    const deadline = new Date("2026-08-21T21:50:00");
+    const btn = document.getElementById('btnWa');
+
+    // Verificar si la rifa ya cerró
+    function verificarCierre() {
+      if (new Date() > deadline) {
+        btn.disabled = true;
+        btn.textContent = '🔒 Rifa Finalizada';
+      }
+    }
+
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
@@ -229,8 +241,13 @@
       construirTablero();
     });
 
-    document.getElementById('btnWa').addEventListener('click', async () => {
-      const btn = document.getElementById('btnWa');
+    btn.addEventListener('click', async () => {
+      // Doble verificación al hacer clic
+      if (new Date() > deadline) {
+        alert('Lo sentimos, la rifa ha finalizado.');
+        return;
+      }
+
       const nombre = document.getElementById('nombre').value.trim();
       const telefono = document.getElementById('tel').value.trim();
 
@@ -281,10 +298,10 @@
         const totalCOP = seleccion.length * 10000;
         const totalUSD = seleccion.length * 3;
 
-        // URL de Google Forms prellenada
+        // URL de Google Forms
         const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSdP90cVfchJqMyfYcxUCFYKcyNcH25auxYl7IQj9vubvfFpDQ/viewform?usp=pp_url&entry.874598015=${encodeURIComponent(nombre)}&entry.1349990828=${encodeURIComponent(telefono)}&entry.866989850=${encodeURIComponent(numerosTexto)}&entry.939498665=WebRifa`;
 
-        // Mensaje de WhatsApp (Texto neutro)
+        // Mensaje de WhatsApp
         const msg = `¡Hola! 👋%0A%0AHe reservado el/los número(s): *${numerosTexto}*%0A👤 *Nombre:* ${encodeURIComponent(nombre)}%0A📞 *Teléfono:* ${encodeURIComponent(telefono)}%0A💰 *Total a pagar:* $${totalCOP.toLocaleString('es-CO')} COP / $${totalUSD} (A tasa del Euro del día)%0A%0A¡Muchas gracias por tu colaboración! Recuerda que tu número participa oficialmente al haber cancelado el valor del boleto.`;
 
         window.open(formUrl, '_blank');
@@ -298,10 +315,13 @@
         console.error(e);
         alert('Ocurrió un error de red al procesar tu solicitud. Por favor intenta de nuevo.');
       } finally {
-        btn.disabled = false;
-        btn.textContent = '📲 Reservar y enviar por WhatsApp';
+        verificarCierre(); // Verificar nuevamente tras terminar la reserva
+        if (!btn.disabled) btn.textContent = '📲 Reservar y enviar por WhatsApp';
       }
     });
+
+    // Ejecutar verificación al cargar la página
+    verificarCierre();
   </script>
 </body>
 </html>
