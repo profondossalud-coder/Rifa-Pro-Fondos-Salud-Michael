@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>🎟️ Rifa 1000</title>
+  <title>🎟️ Rifa 1000 - Profesional Salud</title>
   
-  <meta property="og:title" content="🎟️ Rifa 1000 - Elige tu número">
-  <meta property="og:description" content="Valor: $10.000 COP / €3 EUR (A tasa del Euro del día) por número. Selecciona tus números y reserva.">
+  <meta property="og:title" content="🎟️ Rifa 1000 - Profesional Salud">
+  <meta property="og:description" content="Valor: $10.000 COP / $3 (A tasa del Euro del día) por número. Selecciona tus números y reserva.">
   <meta property="og:type" content="website">
 
   <style>
@@ -14,31 +14,50 @@
     
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      /* Fondo estilo metálico / acero cepillado claro con destellos */
-      background: radial-gradient(circle at center, #ffffff 0%, #e6e9ef 40%, #d1d6e0 70%, #b8bfc9 100%);
+      /* Fondo en todo Azul Rey Profundo con un degradado elegante */
+      background: radial-gradient(circle at center, #00416A 0%, #002642 60%, #001220 100%);
       background-attachment: fixed;
       margin: 0;
       padding: 16px;
       color: #2c3e50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .container { max-width: 800px; margin: 0 auto; }
+    .container { max-width: 800px; width: 100%; margin: 0 auto; }
+
+    /* Contenedor del Logo */
+    .logo-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .main-logo {
+      max-width: 200px;
+      width: 100%;
+      height: auto;
+      border-radius: 50%; /* Opcional, para redondear el borde metálico */
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
 
     h1 { 
       text-align: center; 
       margin-top: 10px; 
-      color: #1a252f;
-      text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+      margin-bottom: 15px;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
       font-weight: 800;
+      font-size: 1.8rem;
     }
 
-    /* Tarjetas estilo metálico suave con bordes pulidos */
+    /* Tarjetas blancas pulidas para máximo contraste */
     .card {
       background: linear-gradient(145deg, #ffffff, #f0f2f5);
       padding: 20px;
       border-radius: 16px;
       margin: 16px 0;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.9);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.9);
       border: 1px solid #dcdfe6;
     }
 
@@ -53,6 +72,14 @@
       font-weight: bold;
       border: 1px solid #a5d6a7;
       box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    }
+
+    .sub-rate {
+      font-size: 0.85rem;
+      font-weight: normal;
+      display: block;
+      margin-top: 2px;
+      color: #2e7d32;
     }
 
     #grid {
@@ -138,10 +165,18 @@
 <body>
 
   <div class="container">
-    <h1>🎟️ Rifa 1000</h1>
+    <div class="logo-container">
+      <!-- Logo central metálico insertado -->
+      <img src="image_3.png" alt="Profesional Salud Logo" class="main-logo">
+    </div>
+
+    <h1>🎟️ Rifa 1000 - Profesional Salud</h1>
 
     <div class="card">
-      <div class="price-tag">Valor: $10.000 COP / €3 EUR (A tasa del Euro del día) por número</div>
+      <div class="price-tag">
+        Valor: $10.000 COP / $3 por número
+        <span class="sub-rate">(A tasa del Euro del día)</span>
+      </div>
       <p style="margin: 6px 0 14px 0; color: #546e7a;">Toca los números disponibles para elegirlos:</p>
       
       <div class="legend">
@@ -154,9 +189,9 @@
 
       <div class="payment-info">
         <h4 style="margin: 0 0 8px 0; color: #1565c0;">💳 Métodos de Pago</h4>
-        <p style="margin: 3px 0;"><b>Efectivo</b></p>
-        <p style="margin: 3px 0;">
-          <b>Pago Móvil</b> (Tasa del Euro del día)<br>
+        <p style="margin: 3px 0; color: #2c3e50;"><b>Efectivo</b></p>
+        <p style="margin: 3px 0; color: #2c3e50;">
+          <b>Pago Móvil</b> (A tasa del Euro del día)<br>
           Banco: Mercantil<br>
           C.I.: 21.003.960<br>
           Teléfono: 04147179001
@@ -283,10 +318,10 @@
 
         const numerosTexto = seleccion.map(x => String(x).padStart(3, '0')).join(', ');
         const totalCOP = seleccion.length * 10000;
-        const totalEUR = seleccion.length * 3;
+        const totalUSD = seleccion.length * 3;
         const formUrl = 'https://forms.gle/1hpjCAmT8jW2qJmZ7';
 
-        const msg = `¡Hola! 👋%0A%0AHe reservado el/los número(s): *${numerosTexto}*%0A👤 *Nombre:* ${encodeURIComponent(nombre)}%0A📞 *Teléfono:* ${encodeURIComponent(telefono)}%0A💰 *Total a pagar:* $${totalCOP.toLocaleString('es-CO')} COP / €${totalEUR} EUR (A tasa del Euro del día)%0A%0AGracias por tu apoyo, para validar tu colaboración registrate en el siguiente formulario:%0A${formUrl}`;
+        const msg = `¡Hola! 👋%0A%0AHe reservado el/los número(s): *${numerosTexto}*%0A👤 *Nombre:* ${encodeURIComponent(nombre)}%0A📞 *Teléfono:* ${encodeURIComponent(telefono)}%0A💰 *Total a pagar:* $${totalCOP.toLocaleString('es-CO')} COP / $${totalUSD} (A tasa del Euro del día)%0A%0AGracias por tu apoyo, para validar tu colaboración registrate en el siguiente formulario:%0A${formUrl}`;
 
         window.open('https://wa.me/584247384214?text=' + msg, '_blank');
         window.open(formUrl, '_blank');
