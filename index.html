@@ -41,9 +41,68 @@
     .taken { background: linear-gradient(135deg, #e53935, #b71c1c); opacity: 0.55; cursor: not-allowed; }
     .sel { background: linear-gradient(135deg, #ff9800, #e65100); }
     
-    .payment-info { margin-top: 15px; font-size: 1.05rem; line-height: 1.5; }
-    .payment-info b { display: block; margin-bottom: 5px; color: #00416A; }
-    .date-info { margin-top: 10px; font-weight: bold; color: #d32f2f; }
+    /* --- NUEVOS ESTILOS MÉTODOS DE PAGO --- */
+    .payment-container { margin-top: 15px; }
+    .payment-title { font-weight: bold; color: #00416A; margin-bottom: 10px; font-size: 1.05rem; }
+    
+    .payment-methods-list { display: flex; flex-direction: column; gap: 10px; }
+    
+    .method-item { 
+        background: #ffffff; 
+        border: 1px solid #cfd8dc; 
+        border-radius: 10px; 
+        padding: 12px; 
+    }
+    
+    .method-header { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        margin-bottom: 8px; 
+        font-weight: bold; 
+        color: #1e293b;
+    }
+    
+    .bank-badge { 
+        background: #e2e8f0; 
+        color: #00416A; 
+        font-size: 0.8rem; 
+        padding: 2px 8px; 
+        border-radius: 6px; 
+    }
+    
+    .detail-row { 
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between; 
+        background: #f8f9fa; 
+        padding: 8px 12px; 
+        border-radius: 8px; 
+        margin-top: 6px; 
+        border: 1px solid #e9ecef; 
+    }
+    
+    .detail-info { display: flex; align-items: center; gap: 8px; }
+    .detail-label { font-size: 0.85rem; color: #64748b; }
+    .detail-value { font-weight: bold; font-family: monospace; font-size: 1rem; color: #0f172a; }
+    
+    .copy-btn { 
+        background: #e0e6ed; 
+        border: none; 
+        border-radius: 6px; 
+        padding: 6px 10px; 
+        cursor: pointer; 
+        display: flex; 
+        align-items: center; 
+        gap: 4px; 
+        font-size: 0.8rem; 
+        color: #334155; 
+        transition: all 0.2s ease; 
+    }
+    .copy-btn:hover { background: #cbd5e1; }
+    .copy-btn.copied { background: #22c55e; color: #ffffff; }
+
+    .date-info { margin-top: 15px; font-weight: bold; color: #d32f2f; text-align: center; }
 
     input { width: 100%; padding: 12px; margin: 6px 0 16px 0; border: 1px solid #b0bec5; border-radius: 8px; }
     .btn-wa { background: linear-gradient(135deg, #25d366, #128c7e); color: #ffffff; padding: 15px; border: none; border-radius: 10px; font-weight: bold; width: 100%; font-size: 1.05rem; cursor: pointer; }
@@ -67,10 +126,54 @@
         </div>
         <div id="grid"></div>
         
-        <div class="payment-info">
-            <b>Métodos de Pago:</b>
-            • Efectivo<br>
-            • Pago Móvil: Banco Mercantil | C.I. 21.003.960 | 04147179001
+        <!-- NUEVO BLOQUE DE MÉTODOS DE PAGO -->
+        <div class="payment-container">
+            <div class="payment-title">Métodos de Pago:</div>
+            <div class="payment-methods-list">
+              
+              <!-- Efectivo -->
+              <div class="method-item">
+                💵 <strong>Efectivo</strong>
+              </div>
+
+              <!-- Pago Móvil -->
+              <div class="method-item">
+                <div class="method-header">
+                  <span>📲 Pago Móvil</span>
+                  <span class="bank-badge">Banco Mercantil</span>
+                </div>
+
+                <!-- Fila Cédula -->
+                <div class="detail-row">
+                  <div class="detail-info">
+                    <span class="detail-label">C.I.:</span>
+                    <span class="detail-value" id="ci-num">21003960</span>
+                  </div>
+                  <button type="button" class="copy-btn" onclick="copyToClipboard('ci-num', this)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                    </svg>
+                    <span>Copiar</span>
+                  </button>
+                </div>
+
+                <!-- Fila Teléfono -->
+                <div class="detail-row">
+                  <div class="detail-info">
+                    <span class="detail-label">Teléfono:</span>
+                    <span class="detail-value" id="phone-num">04147179001</span>
+                  </div>
+                  <button type="button" class="copy-btn" onclick="copyToClipboard('phone-num', this)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                    </svg>
+                    <span>Copiar</span>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
             <div class="date-info">📅 Sorteo: 21 de agosto. <span id="countdown"></span></div>
         </div>
       </div>
@@ -94,6 +197,22 @@
       <p>Programado por: <strong>@nathaliemarinvel</strong></p>
     </footer>
   </div>
+
+  <script>
+    // Función global para copiar datos al portapapeles
+    function copyToClipboard(id, btn) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.innerHTML;
+        btn.classList.add('copied');
+        btn.innerHTML = '✓ ¡Copiado!';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.innerHTML = originalText;
+        }, 1800);
+      });
+    }
+  </script>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -146,7 +265,7 @@
         const boletos = seleccion.map(x => x.toString().padStart(3, '0')).join(', ');
         
         update(ref(db, 'boletos_ocupados'), seleccion.reduce((acc, n) => ({...acc, [n]: {nombre, tel, metodo}}), {}));
-        const msg = `¡Hola!👋 Muchas gracias por tu colaboración.\n\n*Datos de la reserva:*\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Boletos Reservados:*${boletos}\n*Método de pago:* ${metodo}\n\nRecuerda que tu número participa oficialmente al haber cancelado el valor del boleto. Si hiciste transferencia, por favor enviar comprobante de pago.`;
+        const msg = `¡Hola!👋 Muchas gracias por tu colaboración.\n\n*Datos de la reserva:*\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Boletos Reservados:* ${boletos}\n*Método de pago:* ${metodo}\n\nRecuerda que tu número participa oficialmente al haber cancelado el valor del boleto. Si hiciste transferencia, por favor enviar comprobante de pago.`;
 
         window.location.href = 'https://wa.me/584247384214?text=' + encodeURIComponent(msg);
     });
