@@ -19,22 +19,22 @@
     
     .container { max-width: 800px; margin: auto; }
     
-    /* ENCABEZADO: LOGO CENTRADO COMO ÚNICO ENCABEZADO */
+    /* ENCABEZADO: LOGO MÁS GRANDE DE DESTACADO (TÍTULO PRINCIPAL) */
     .brand-header { 
       display: flex; 
       justify-content: center; 
       align-items: center;
-      margin-bottom: 25px; 
-      margin-top: 15px;
+      margin-bottom: 30px; 
+      margin-top: 20px;
     }
     .brand-header img { 
-      width: 180px; 
-      max-width: 80%;
+      width: 260px; /* Tamaño mayor para destacar como título principal */
+      max-width: 90%;
       height: auto; 
       object-fit: contain; 
       background: transparent; 
       border: none;
-      filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.12));
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
     }
 
     /* TARJETAS CONTENEDORAS */
@@ -47,7 +47,7 @@
       border: 1px solid #e2e8f0; 
     }
     
-    /* BLOQUE DE PRECIO Y TASA EURO BCV AUTOMÁTICA */
+    /* BLOQUE DE PRECIO Y PAGO TASA EURO AUTOMÁTICA */
     .price-tag { 
       font-size: 1.2rem; 
       color: #1b5e20; 
@@ -205,7 +205,7 @@
 <body>
 
   <div class="container">
-    <!-- LOGO CENTRADO COMO ÚNICO ENCABEZADO -->
+    <!-- LOGO DESTACADO COMO TÍTULO PRINCIPAL -->
     <div class="brand-header">
       <img src="logo.png" alt="Rifa 1000">
     </div>
@@ -217,7 +217,7 @@
             <br>
             <div class="bcv-box">
               <span class="live-dot"></span>
-              <span id="euroRate">Pago Tasa Euro según el BCV: Cargando...</span>
+              <span id="euroRate">Pago Tasa Euro: Obteniendo valor oficial...</span>
             </div>
         </div>
         
@@ -312,34 +312,36 @@
       });
     }
 
-    // CONSULTA AUTOMÁTICA DE LA TASA EURO DEL BCV
-    async function fetchEuroBCV() {
+    // ACTUALIZACIÓN DIARIA AUTOMÁTICA DE LA TASA EURO
+    async function fetchEuroRate() {
       const euroElem = document.getElementById('euroRate');
       
+      // Fuente principal: API de euro en Venezuela
       try {
         const res = await fetch('https://ve.dolarapi.com/v1/euros/oficial');
         const data = await res.json();
         if (data && data.promedio) {
           const valor = parseFloat(data.promedio).toFixed(2);
-          euroElem.innerText = `Pago Tasa Euro según el BCV: Bs. ${valor}`;
+          euroElem.innerText = `Pago Tasa Euro: Bs. ${valor}`;
           return;
         }
       } catch (e) {}
 
+      // Fuente de respaldo
       try {
         const res = await fetch('https://pydolarve.org/api/v1/dollar?page=bcv');
         const data = await res.json();
         if (data && data.monedas && data.monedas.eur && data.monedas.eur.price) {
           const valor = parseFloat(data.monedas.eur.price).toFixed(2);
-          euroElem.innerText = `Pago Tasa Euro según el BCV: Bs. ${valor}`;
+          euroElem.innerText = `Pago Tasa Euro: Bs. ${valor}`;
           return;
         }
       } catch (e) {}
 
-      euroElem.innerText = `Pago Tasa Euro según el BCV: Consultar reporte del día`;
+      euroElem.innerText = `Pago Tasa Euro: Consultar al reservar`;
     }
 
-    fetchEuroBCV();
+    fetchEuroRate();
   </script>
 
   <!-- LÓGICA CONEXIÓN CON FIREBASE Y REDIRECCIÓN WHATSAPP -->
