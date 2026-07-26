@@ -8,56 +8,56 @@
   <style>
     * { box-sizing: border-box; }
     
-    /* FONDO COLOR PERLA ELEGANTE */
+    /* FONDO NOBLE: VERDE SUAVE ESPERANZA Y SALUD */
     body { 
       font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; 
-      background-color: #f0f4f8; 
+      background-color: #f0f7f4; 
       margin: 0; 
-      padding: 16px; 
+      padding: 8px 12px 20px 12px; 
       color: #1e293b; 
     }
     
     .container { max-width: 800px; margin: auto; }
     
-    /* ENCABEZADO: LOGO MÁS GRANDE DE DESTACADO (TÍTULO PRINCIPAL) */
+    /* ENCABEZADO: LOGO CENTRADO Y COMPACTO */
     .brand-header { 
       display: flex; 
       justify-content: center; 
       align-items: center;
-      margin-bottom: 30px; 
-      margin-top: 20px;
+      margin-top: 4px; 
+      margin-bottom: 8px; 
     }
     .brand-header img { 
-      width: 260px; /* Tamaño mayor para destacar como título principal */
-      max-width: 90%;
+      width: 220px; 
+      max-width: 85%;
       height: auto; 
       object-fit: contain; 
       background: transparent; 
       border: none;
-      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
+      filter: drop-shadow(0 4px 10px rgba(15, 23, 42, 0.08));
     }
 
-    /* TARJETAS CONTENEDORAS */
+    /* TARJETAS NOBLES Y LIMPIAS */
     .card { 
       background: #ffffff; 
-      padding: 20px; 
+      padding: 18px 20px; 
       border-radius: 16px; 
-      margin: 16px 0; 
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); 
+      margin: 12px 0; 
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.04); 
       border: 1px solid #e2e8f0; 
     }
     
-    /* BLOQUE DE PRECIO Y PAGO TASA EURO AUTOMÁTICA */
+    /* BLOQUE DE PRECIO Y TASA EURO BCV AUTOMÁTICA */
     .price-tag { 
-      font-size: 1.2rem; 
-      color: #1b5e20; 
-      background: linear-gradient(135deg, #e8f5e9, #c8e6c9); 
+      font-size: 1.15rem; 
+      color: #0f5132; 
+      background: linear-gradient(135deg, #e8f5e9, #d1e7dd); 
       padding: 14px 12px; 
       border-radius: 12px; 
       display: block; 
       margin-bottom: 14px; 
       font-weight: bold; 
-      border: 1px solid #a5d6a7; 
+      border: 1px solid #badbcc; 
       text-align: center; 
     }
     
@@ -68,38 +68,38 @@
       margin-top: 8px;
       font-size: 0.95rem;
       background: #ffffff;
-      color: #000000;
+      color: #0f172a;
       padding: 6px 14px;
       border-radius: 20px;
-      border: 1px solid #000000;
+      border: 1px solid #0f172a;
       font-weight: 700;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
 
     .live-dot {
       width: 9px;
       height: 9px;
-      background-color: #22c55e;
+      background-color: #198754;
       border-radius: 50%;
       display: inline-block;
-      box-shadow: 0 0 8px #22c55e;
+      box-shadow: 0 0 8px #198754;
       animation: pulse 2s infinite;
     }
 
     @keyframes pulse {
-      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
-      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(25, 135, 84, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(25, 135, 84, 0); }
     }
 
-    /* GRILLA DE NÚMEROS */
+    /* GRILLA DE NÚMEROS LOTERÍA */
     #grid { 
       display: grid; 
       grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); 
       gap: 6px; 
       padding: 10px; 
       background: #f8fafc; 
-      border: 1px solid #cfd8dc; 
+      border: 1px solid #cbd5e1; 
       border-radius: 12px; 
     }
     .num { 
@@ -110,14 +110,16 @@
       cursor: pointer; 
       font-size: 0.85rem; 
       font-weight: bold; 
-      background: linear-gradient(135deg, #2e7d32, #1b5e20); 
+      background: linear-gradient(135deg, #15803d, #0f5132); 
+      transition: transform 0.1s ease;
     }
-    .taken { background: linear-gradient(135deg, #e53935, #b71c1c); opacity: 0.55; cursor: not-allowed; }
-    .sel { background: linear-gradient(135deg, #ff9800, #e65100); }
+    .num:hover { transform: scale(1.04); }
+    .taken { background: linear-gradient(135deg, #dc2626, #991b1b) !important; opacity: 0.55; cursor: not-allowed; transform: none !important; }
+    .sel { background: linear-gradient(135deg, #d97706, #b45309) !important; }
     
     /* MÉTODOS DE PAGO */
-    .payment-container { margin-top: 15px; }
-    .payment-title { font-weight: bold; color: #000000; margin-bottom: 10px; font-size: 1.05rem; }
+    .payment-container { margin-top: 16px; }
+    .payment-title { font-weight: bold; color: #0f172a; margin-bottom: 10px; font-size: 1.05rem; }
     
     .payment-methods-list { display: flex; flex-direction: column; gap: 10px; }
     
@@ -134,12 +136,12 @@
       align-items: center; 
       margin-bottom: 8px; 
       font-weight: bold; 
-      color: #1e293b;
+      color: #0f172a;
     }
     
     .bank-badge { 
       background: #e2e8f0; 
-      color: #000000; 
+      color: #0f172a; 
       font-size: 0.8rem; 
       padding: 2px 8px; 
       border-radius: 6px; 
@@ -161,7 +163,7 @@
     .detail-label { font-size: 0.85rem; color: #64748b; }
     .detail-value { font-weight: bold; font-family: monospace; font-size: 1rem; color: #0f172a; }
     
-    /* BOTÓN SOLO ÍCONO COMPACTO */
+    /* BOTÓN COPIAR DISCRETO */
     .copy-btn { 
       background: #f1f5f9; 
       border: 1px solid #cbd5e1; 
@@ -176,36 +178,72 @@
       flex-shrink: 0;
     }
     .copy-btn:hover { background: #e2e8f0; }
-    .copy-btn.copied { background: #22c55e; color: #ffffff; border-color: #22c55e; }
+    .copy-btn.copied { background: #16a34a; color: #ffffff; border-color: #16a34a; }
 
-    .date-info { margin-top: 15px; font-weight: bold; color: #d32f2f; text-align: center; }
+    .date-info { margin-top: 15px; font-weight: bold; color: #b91c1c; text-align: center; }
 
-    /* FORMULARIO Y BOTÓN WHATSAPP */
-    input { width: 100%; padding: 12px; margin: 6px 0 16px 0; border: 1px solid #b0bec5; border-radius: 8px; font-size: 0.95rem; }
-    .btn-wa { background: linear-gradient(135deg, #25d366, #128c7e); color: #ffffff; padding: 15px; border: none; border-radius: 10px; font-weight: bold; width: 100%; font-size: 1.05rem; cursor: pointer; }
+    /* FORMULARIO Y BOTONES */
+    label { font-size: 0.92rem; color: #334155; }
+    input { width: 100%; padding: 12px; margin: 6px 0 16px 0; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; }
+    input:focus { outline: none; border-color: #15803d; }
+
+    .btn-wa { 
+      background: linear-gradient(135deg, #16a34a, #15803d); 
+      color: #ffffff; 
+      padding: 15px; 
+      border: none; 
+      border-radius: 10px; 
+      font-weight: bold; 
+      width: 100%; 
+      font-size: 1.05rem; 
+      cursor: pointer; 
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
+    }
+    .btn-wa:hover { opacity: 0.95; }
+
+    /* BANNER AL CANAL Y SOPORTE */
+    .channel-banner {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+      margin-top: 14px;
+      font-size: 0.88rem;
+      color: #166534;
+    }
+    .channel-banner a {
+      color: #15803d;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .channel-banner a:hover { text-decoration: underline; }
 
     .support-info {
       text-align: center;
       margin-top: 14px;
       font-size: 0.92rem;
-      color: #555;
+      color: #475569;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
     }
     .support-info a {
-      color: #128c7e;
+      color: #15803d;
       font-weight: bold;
       text-decoration: none;
+      font-size: 1rem;
     }
-    .support-info a:hover {
-      text-decoration: underline;
-    }
+    .support-info a:hover { text-decoration: underline; }
 
-    footer { text-align: center; padding: 20px; color: #64748b; font-size: 0.85rem; margin-top: 40px; border-top: 1px solid #cbd5e1; }
+    footer { text-align: center; padding: 20px; color: #64748b; font-size: 0.85rem; margin-top: 30px; border-top: 1px solid #cbd5e1; }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <!-- LOGO DESTACADO COMO TÍTULO PRINCIPAL -->
+    <!-- LOGO CENTRADO COMO ÚNICO TÍTULO -->
     <div class="brand-header">
       <img src="logo.png" alt="Rifa 1000">
     </div>
@@ -217,7 +255,7 @@
             <br>
             <div class="bcv-box">
               <span class="live-dot"></span>
-              <span id="euroRate">Pago Tasa Euro: Obteniendo valor oficial...</span>
+              <span id="euroRate">Pago Tasa Euro según el BCV: Cargando...</span>
             </div>
         </div>
         
@@ -285,8 +323,14 @@
         
         <button type="submit" class="btn-wa">📲 Reservar y enviar por WhatsApp</button>
         
+        <!-- BANNER AL CANAL DE WHATSAPP -->
+        <div class="channel-banner">
+          📢 Sigue los resultados en nuestro <a href="https://whatsapp.com/channel/0029VbC5mkI2ER6n5D784X0N" target="_blank">Canal de WhatsApp</a>
+        </div>
+
         <div class="support-info">
-          💬 ¿Dudas o preguntas?: <a href="https://wa.me/584247384214" target="_blank">+58 424-7384214</a>
+          <span>💬 ¿Dudas o preguntas?</span>
+          <a href="https://wa.me/584247384214" target="_blank">+58 424-7384214</a>
         </div>
       </div>
     </form>
@@ -298,7 +342,7 @@
   </div>
 
   <script>
-    // FUNCIÓN PARA COPIAR DATOS DE PAGO MÓVIL
+    // COPIAR AL PORTAPAPELES
     function copyToClipboard(id, btn) {
       const text = document.getElementById(id).innerText;
       navigator.clipboard.writeText(text).then(() => {
@@ -312,39 +356,37 @@
       });
     }
 
-    // ACTUALIZACIÓN DIARIA AUTOMÁTICA DE LA TASA EURO
-    async function fetchEuroRate() {
+    // CONSULTA AUTOMÁTICA DE TASA EURO SEGÚN EL BCV Y FUENTES DE REFERENCIA (MONITOR DE DIVISAS)
+    async function fetchEuroBCV() {
       const euroElem = document.getElementById('euroRate');
       
-      // Fuente principal: API de euro en Venezuela
-      try {
-        const res = await fetch('https://ve.dolarapi.com/v1/euros/oficial');
-        const data = await res.json();
-        if (data && data.promedio) {
-          const valor = parseFloat(data.promedio).toFixed(2);
-          euroElem.innerText = `Pago Tasa Euro: Bs. ${valor}`;
-          return;
-        }
-      } catch (e) {}
-
-      // Fuente de respaldo
       try {
         const res = await fetch('https://pydolarve.org/api/v1/dollar?page=bcv');
         const data = await res.json();
         if (data && data.monedas && data.monedas.eur && data.monedas.eur.price) {
           const valor = parseFloat(data.monedas.eur.price).toFixed(2);
-          euroElem.innerText = `Pago Tasa Euro: Bs. ${valor}`;
+          euroElem.innerText = `Pago Tasa Euro según el BCV: Bs. ${valor}`;
           return;
         }
       } catch (e) {}
 
-      euroElem.innerText = `Pago Tasa Euro: Consultar al reservar`;
+      try {
+        const res = await fetch('https://ve.dolarapi.com/v1/euros/oficial');
+        const data = await res.json();
+        if (data && data.promedio) {
+          const valor = parseFloat(data.promedio).toFixed(2);
+          euroElem.innerText = `Pago Tasa Euro según el BCV: Bs. ${valor}`;
+          return;
+        }
+      } catch (e) {}
+
+      euroElem.innerText = `Pago Tasa Euro según el BCV: Consultar reporte del día`;
     }
 
-    fetchEuroRate();
+    fetchEuroBCV();
   </script>
 
-  <!-- LÓGICA CONEXIÓN CON FIREBASE Y REDIRECCIÓN WHATSAPP -->
+  <!-- LÓGICA DE FIREBASE Y REDIRECCIÓN A WHATSAPP -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
