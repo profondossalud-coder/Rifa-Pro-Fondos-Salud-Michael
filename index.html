@@ -117,7 +117,8 @@
         const boletos = seleccion.map(x => x.toString().padStart(3, '0')).join(', ');
         
         update(ref(db, 'boletos_ocupados'), seleccion.reduce((acc, n) => ({...acc, [n]: {nombre, tel, metodo}}), {}));
-        const msg = `¡Muchas gracias! Confirmaré tu reserva al recibir tu pago.\n\n*Datos de la reserva:*\nNombre: ${nombre}\nTeléfono: ${tel}\nMétodo: ${metodo}\nBoletos: ${boletos}`;
+        const msg = `¡Hola!👋 Muchas gracias por tu colaboración.\n\n*Datos de la reserva:*\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Boletos Reservados:*${boletos}\n*Método de pago:* ${metodo}\n\nRecuerda que tu número participa oficialmente al haber cancelado el valor del boleto. Si hiciste transferencia, por favor enviar comprobante de pago.`;
+
         window.location.href = 'https://wa.me/584247384214?text=' + encodeURIComponent(msg);
     });
   </script>
