@@ -3,45 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro-Fondos Salud Michael Mora - Gran Rifa</title>
+    <title>Pro-Fondos Salud Michael Mora</title>
     <style>
         :root {
-            --primary-color: #0056b3;
-            --secondary-color: #28a745;
-            --bg-color: #f4f7f6;
-            --text-color: #333;
+            --primary-color: #0d6efd;
+            --success-color: #198754;
+            --danger-color: #dc3545;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #212529;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 700px;
             width: 100%;
-            background: #fff;
-            padding: 25px;
+            background: var(--card-bg);
+            padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
-        h1 {
+        .header {
             text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .header h1 {
             color: var(--primary-color);
-            margin-bottom: 5px;
+            margin: 0 0 5px 0;
+            font-size: 24px;
         }
 
-        p.subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 25px;
+        .header p {
+            margin: 0;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .info-box {
+            background-color: #e7f1ff;
+            border-left: 4px solid var(--primary-color);
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 14px;
         }
 
         .form-group {
@@ -51,92 +68,111 @@
         label {
             display: block;
             margin-bottom: 5px;
-            font-weight: bold;
+            font-weight: 600;
         }
 
-        input[type="text"], input[type="tel"] {
+        input[type="text"], input[type="tel"], input[type="number"] {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #ced4da;
             border-radius: 6px;
             box-sizing: border-box;
-            font-size: 16px;
+            font-size: 15px;
+        }
+
+        .tickets-container {
+            margin-bottom: 20px;
         }
 
         .tickets-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-            gap: 8px;
-            max-height: 350px;
+            grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
+            gap: 6px;
+            max-height: 300px;
             overflow-y: auto;
-            border: 1px solid #ddd;
+            border: 1px solid #dee2e6;
             padding: 10px;
             border-radius: 6px;
-            margin-bottom: 20px;
-            background: #fafafa;
+            background: #fff;
         }
 
         .ticket {
-            padding: 10px 5px;
-            background-color: #e9ecef;
+            padding: 8px 2px;
+            background-color: #f1f3f5;
             border: 1px solid #ced4da;
             border-radius: 4px;
             text-align: center;
             cursor: pointer;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 13px;
             user-select: none;
-            transition: all 0.2s ease;
         }
 
         .ticket.selected {
-            background-color: var(--secondary-color);
+            background-color: var(--success-color);
             color: white;
-            border-color: #1e7e34;
+            border-color: #146c43;
         }
 
         .ticket.occupied {
-            background-color: #dc3545;
+            background-color: var(--danger-color);
             color: white;
             cursor: not-allowed;
-            opacity: 0.6;
+            opacity: 0.65;
             text-decoration: line-through;
         }
 
-        .btn-submit {
+        .summary {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        .summary p {
+            margin: 5px 0;
+            font-size: 15px;
+        }
+
+        .btn-whatsapp {
             width: 100%;
             padding: 14px;
-            background-color: var(--primary-color);
+            background-color: #25d366;
             color: white;
             border: none;
             border-radius: 6px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        .btn-submit:hover {
-            background-color: #004085;
-        }
-
-        .status-msg {
-            margin-top: 15px;
-            text-align: center;
-            font-weight: bold;
+        .btn-whatsapp:hover {
+            background-color: #20ba5a;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Pro-Fondos Salud Michael Mora</h1>
-    <p class="subtitle">Organiza: Equipo Dalanmar</p>
+    <div class="header">
+        <h1>Pro-Fondos Salud Michael Mora</h1>
+        <p>Organiza: Equipo Dalanmar</p>
+    </div>
+
+    <div class="info-box">
+        <strong>Fecha de la Rifa:</strong> 21 de agosto de 2026<br>
+        <strong>Valor del Boleto:</strong> 1 EUR (o equivalente según la tasa oficial del día)
+    </div>
 
     <form id="raffleForm">
         <div class="form-group">
             <label for="nombre">Nombres y Apellidos:</label>
-            <input type="text" id="nombre" placeholder="Ingresa tu nombre completo" required>
+            <input type="text" id="nombre" placeholder="Tu nombre completo" required>
         </div>
 
         <div class="form-group">
@@ -145,34 +181,50 @@
         </div>
 
         <div class="form-group">
-            <label>Selecciona tus boletos:</label>
-            <div class="tickets-grid" id="ticketsGrid">
-                <!-- Se generan dinámicamente con JS -->
-            </div>
+            <label for="tasaEuro">Tasa del Euro del día (Bs/EUR):</label>
+            <input type="number" id="tasaEuro" step="0.01" value="40.00" required>
         </div>
 
-        <button type="submit" class="btn-submit">Reservar Boletos</button>
-    </form>
+        <div class="form-group tickets-container">
+            <label>Selecciona tus Boletos (000 - 999):</label>
+            <div class="tickets-grid" id="ticketsGrid"></div>
+        </div>
 
-    <div class="status-msg" id="statusMessage"></div>
+        <div class="summary">
+            <p><strong>Boletos seleccionados:</strong> <span id="selectedCount">0</span></p>
+            <p><strong>Números:</strong> <span id="selectedNumbers">Ninguno</span></p>
+            <p><strong>Total EUR:</strong> <span id="totalEur">0</span> €</p>
+            <p><strong>Total a Pagar (Bs):</strong> <span id="totalBs">0.00</span> Bs</p>
+        </div>
+
+        <button type="submit" class="btn-whatsapp">
+            Reservar por WhatsApp
+        </button>
+    </form>
 </div>
 
 <script>
-    // DATOS DE INTEGRACIÓN CON GOOGLE FORMS
+    // =========================================================================
+    // CONFIGURACIÓN DE CONTACTO Y GOOGLE FORMS
+    // =========================================================================
     const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdP90cVfchJqMyfYcxUCFYKcyNcH25auxYl7IQj9vubvfFpDQ/formResponse';
     const ENTRY_NOMBRE = 'entry.874598015';
     const ENTRY_TELEFONO = 'entry.1349990828';
     const ENTRY_BOLETOS = 'entry.866989850';
 
+    // EJEMPLO: Si tu número es 04141234567, escribe '584141234567' (sin el primer cero)
+    const WHATSAPP_NUMERO = '584140000000'; // <--- INGRESA TU NÚMERO AQUÍ
+    // =========================================================================
+
     const TOTAL_BOLETOS = 1000;
     const boletosSeleccionados = new Set();
     
-    // Aquí puedes incluir los números ya vendidos/ocupados si los tienes (Ej: ['005', '012', '150'])
-    const boletosOcupados = []; 
+    // Lista de números no disponibles (marcados a lapicero)
+    const boletosOcupados = ['005', '012', '050', '100']; 
 
     const grid = document.getElementById('ticketsGrid');
+    const tasaInput = document.getElementById('tasaEuro');
 
-    // Generar la lista de números (000 - 999)
     function cargarBoletos() {
         grid.innerHTML = '';
         for (let i = 0; i < TOTAL_BOLETOS; i++) {
@@ -199,9 +251,23 @@
             boletosSeleccionados.add(numero);
             element.classList.add('selected');
         }
+        actualizarResumen();
     }
 
-    // Envío silencioso en segundo plano a Google Forms
+    function actualizarResumen() {
+        const count = boletosSeleccionados.size;
+        const tasa = parseFloat(tasaInput.value) || 0;
+        const totalBs = count * 1 * tasa;
+
+        document.getElementById('selectedCount').textContent = count;
+        document.getElementById('selectedNumbers').textContent = count > 0 ? Array.from(boletosSeleccionados).join(', ') : 'Ninguno';
+        document.getElementById('totalEur').textContent = count;
+        document.getElementById('totalBs').textContent = totalBs.toFixed(2);
+    }
+
+    tasaInput.addEventListener('input', actualizarResumen);
+
+    // ENVÍO SILENCIOSO A GOOGLE FORMS
     function enviarAGoogleForm(nombre, telefono, boletosText) {
         const formData = new FormData();
         formData.append(ENTRY_NOMBRE, nombre);
@@ -214,43 +280,48 @@
             body: formData
         })
         .then(() => {
-            console.log('Reserva registrada en Google Forms exitosamente.');
+            console.log('Registro guardado en Google Forms con éxito.');
         })
         .catch(error => {
-            console.error('Error al registrar la reserva:', error);
+            console.error('Error al guardar en Google Forms:', error);
         });
     }
 
-    // Manejador del Formulario
+    // MANEJADOR DEL FORMULARIO
     document.getElementById('raffleForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
         const nombre = document.getElementById('nombre').value.trim();
         const telefono = document.getElementById('telefono').value.trim();
-        const msgDiv = document.getElementById('statusMessage');
+        const tasa = parseFloat(tasaInput.value) || 0;
 
         if (boletosSeleccionados.size === 0) {
-            msgDiv.style.color = '#dc3545';
-            msgDiv.textContent = 'Por favor, selecciona al menos un boleto.';
+            alert('Por favor, selecciona al menos un boleto antes de continuar.');
             return;
         }
 
         const listaBoletos = Array.from(boletosSeleccionados).join(', ');
+        const totalEur = boletosSeleccionados.size;
+        const totalBs = (totalEur * tasa).toFixed(2);
 
-        // Guardar la información en Google Forms
+        // 1. Guardado automático y silencioso en Google Forms (para Excel)
         enviarAGoogleForm(nombre, telefono, listaBoletos);
 
-        // Confirmación visual al comprador
-        msgDiv.style.color = '#28a745';
-        msgDiv.textContent = '¡Reserva procesada con éxito! Tus números: ' + listaBoletos;
+        // 2. Redirección con mensaje a WhatsApp
+        const mensajeWA = `Hola, quiero confirmar mi reserva para la Rifa Pro-Fondos Salud Michael Mora.\n\n` +
+                          `*Nombre:* ${nombre}\n` +
+                          `*Teléfono:* ${telefono}\n` +
+                          `*Boletos Reservados:* ${listaBoletos}\n` +
+                          `*Total EUR:* ${totalEur} €\n` +
+                          `*Total a Pagar (Bs):* ${totalBs} Bs\n\n` +
+                          `_Nota: Entiendo que para asegurar mi participación debo completar y reportar el pago correspondiente._`;
 
-        // Limpiar formulario
-        document.getElementById('raffleForm').reset();
-        boletosSeleccionados.clear();
-        cargarBoletos();
+        const urlWA = `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensajeWA)}`;
+        
+        window.open(urlWA, '_blank');
     });
 
-    // Inicializar la cuadrícula al cargar
+    // Inicializar al cargar
     cargarBoletos();
 </script>
 
