@@ -28,6 +28,9 @@
 
     input { width: 100%; padding: 12px; margin: 6px 0 16px 0; border: 1px solid #b0bec5; border-radius: 8px; }
     .btn-wa { background: linear-gradient(135deg, #25d366, #128c7e); color: #ffffff; padding: 15px; border: none; border-radius: 10px; font-weight: bold; width: 100%; font-size: 1.05rem; cursor: pointer; }
+
+    /* Estilo del Footer */
+    footer { text-align: center; padding: 20px; color: #ffffff; font-size: 0.85rem; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); }
   </style>
 </head>
 <body>
@@ -66,11 +69,19 @@
         <button type="submit" class="btn-wa">📲 Reservar y enviar por WhatsApp</button>
       </div>
     </form>
+
+    <footer>
+      <p>&copy; <span id="year"></span> Rifa 1000 - Operación Salud. Todos los derechos reservados.</p>
+      <p>Programado por: <strong>@NATHMAVE</strong></p>
+    </footer>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    // Actualización automática del año
+    document.getElementById('year').textContent = new Date().getFullYear();
 
     const target = new Date("2026-08-21T21:50:00").getTime();
     setInterval(() => {
