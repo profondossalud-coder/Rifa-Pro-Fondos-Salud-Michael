@@ -333,44 +333,55 @@
       });
     }
 
-    // CONSULTA ULTRASÓNICA MULTIHILO Y SIN CACHÉ DE LA TASA EURO BCV
+    // CONSULTA AUTOMÁTICA EN TIEMPO REAL SIN CACHÉ
     async function fetchEuroBCV() {
       const euroElem = document.getElementById('euroRate');
-      const timestamp = new Date().getTime();
+      euroElem.innerText = "Consultando BCV en vivo...";
 
-      // Definición de APIs en tiempo real
-      const api1 = fetch(`https://ve.dolarapi.com/v1/euros/oficial?_t=${timestamp}`, { cache: 'no-store' })
-        .then(r => r.json())
-        .then(d => {
-          const val = d.promedio || d.precio;
-          if (val && !isNaN(val)) return parseFloat(val).toFixed(2);
-          throw new Error();
-        });
+      const timeStamp = new Date().getTime();
+      
+      const apis = [
+        `https://pydolarve.org/api/v1/dollar?page=bcv&_t=${timeStamp}`,
+        `https://ve.dolarapi.com/v1/euros/oficial?_t=${timeStamp}`
+      ];
 
-      const api2 = fetch(`https://pydolarve.org/api/v1/dollar?page=bcv&_t=${timestamp}`, { cache: 'no-store' })
-        .then(r => r.json())
-        .then(d => {
-          if (d?.monedas?.eur?.price) return parseFloat(d.monedas.eur.price).toFixed(2);
-          throw new Error();
-        });
+      let obtenido = false;
 
-      const api3 = fetch(`https://monitordevisasvenezuela.com/api/v1/rates?_t=${timestamp}`, { cache: 'no-store' })
-        .then(r => r.json())
-        .then(d => {
-          if (d?.eur || d?.euro) return parseFloat(d.eur || d.euro).toFixed(2);
-          throw new Error();
-        });
+      for (const url of apis) {
+        try {
+          const response = await fetch(url, { 
+            cache: 'no-store',
+            headers: { 'Pragma': 'no-cache', 'Cache-Control': 'no-cache' }
+          });
 
-      try {
-        // La primera API que responda con éxito en milisegundos actualiza la pantalla de inmediato
-        const fastResult = await Promise.any([api1, api2, api3]);
-        euroElem.innerText = `Pago Tasa Euro según el BCV: Bs. ${fastResult}`;
-      } catch (e) {
-        euroElem.innerText = `Pago Tasa Euro según el BCV: Consultar reporte oficial`;
+          if (!response.ok) continue;
+
+          const data = await response.json();
+          let euroValor = null;
+
+          if (data?.monedas?.eur?.price) {
+            euroValor = parseFloat(data.monedas.eur.price);
+          } else if (data?.promedio || data?.precio) {
+            euroValor = parseFloat(data.promedio || data.precio);
+          }
+
+          if (euroValor && !isNaN(euroValor) && euroValor > 0) {
+            const valorFormateado = euroValor.toFixed(2).replace('.', ',');
+            euroElem.innerText = `Pago Tasa Euro según el BCV: Bs. ${valorFormateado}`;
+            obtenido = true;
+            break;
+          }
+        } catch (err) {
+          console.warn("Reintentando conexión con servidor de tasa...");
+        }
+      }
+
+      if (!obtenido) {
+        euroElem.innerText = "Actualizando tasa oficial...";
+        setTimeout(fetchEuroBCV, 2500);
       }
     }
 
-    // Ejecuta inmediatamente al cargar la página
     fetchEuroBCV();
   </script>
 
