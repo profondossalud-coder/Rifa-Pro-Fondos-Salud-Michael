@@ -9,8 +9,10 @@
     body { font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle at center, #00416A 0%, #002642 60%, #001220 100%); background-attachment: fixed; margin: 0; padding: 16px; color: #2c3e50; }
     .container { max-width: 800px; margin: auto; }
     
-    .header-text { text-align: center; margin-bottom: 20px; }
-    .header-text h1 { color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); font-weight: 800; font-size: 2rem; margin: 0; }
+    /* Header estratégico: Logo y Título integrados */
+    .brand-header { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; }
+    .brand-header img { width: 50px; height: 50px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2); }
+    .brand-header h1 { color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); font-weight: 800; font-size: 2.2rem; margin: 0; letter-spacing: -0.5px; }
 
     .card { background: linear-gradient(145deg, #ffffff, #f0f2f5); padding: 20px; border-radius: 16px; margin: 16px 0; box-shadow: 0 10px 25px rgba(0,0,0,0.25); border: 1px solid #dcdfe6; }
     
@@ -28,13 +30,17 @@
 
     input { width: 100%; padding: 12px; margin: 6px 0 16px 0; border: 1px solid #b0bec5; border-radius: 8px; }
     .btn-wa { background: linear-gradient(135deg, #25d366, #128c7e); color: #ffffff; padding: 15px; border: none; border-radius: 10px; font-weight: bold; width: 100%; font-size: 1.05rem; cursor: pointer; }
+
+    footer { text-align: center; padding: 20px; color: #ffffff; font-size: 0.85rem; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <div class="header-text">
-      <h1>Rifa 1000 - Operación Salud</h1>
+    <!-- Header Integrado con logo.png -->
+    <div class="brand-header">
+      <img src="logo.png" alt="Logo">
+      <h1>Rifa 1000</h1>
     </div>
 
     <form id="raffleForm">
@@ -48,7 +54,7 @@
         <div class="payment-info">
             <b>Métodos de Pago:</b>
             • Efectivo<br>
-            • Pago Móvil: Banco Mercantil | C.I. 21003960 | 04147179001
+            • Pago Móvil: Banco Mercantil | C.I. 21.003.960 | 04147179001
             <div class="date-info">📅 Sorteo: 21 de agosto. <span id="countdown"></span></div>
         </div>
       </div>
@@ -66,11 +72,18 @@
         <button type="submit" class="btn-wa">📲 Reservar y enviar por WhatsApp</button>
       </div>
     </form>
+    
+    <footer>
+      <p>&copy; <span id="year"></span> Rifa 1000 - Operación Salud. Todos los derechos reservados.</p>
+      <p>Programado por: <strong>@nathmave</strong></p>
+    </footer>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    document.getElementById('year').textContent = new Date().getFullYear();
 
     const target = new Date("2026-08-21T21:50:00").getTime();
     setInterval(() => {
