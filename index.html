@@ -8,46 +8,32 @@
     * { box-sizing: border-box; }
     body { font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle at center, #00416A 0%, #002642 60%, #001220 100%); background-attachment: fixed; margin: 0; padding: 16px; color: #2c3e50; }
     .container { max-width: 800px; margin: auto; }
-    
     .header-text { text-align: center; margin-bottom: 20px; }
     .header-text h1 { color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); font-weight: 800; font-size: 2rem; margin: 0; }
-
     .card { background: linear-gradient(145deg, #ffffff, #f0f2f5); padding: 20px; border-radius: 16px; margin: 16px 0; box-shadow: 0 10px 25px rgba(0,0,0,0.25); border: 1px solid #dcdfe6; }
-    
     .price-tag { font-size: 1.2rem; color: #1b5e20; background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 12px; border-radius: 10px; display: block; margin-bottom: 12px; font-weight: bold; border: 1px solid #a5d6a7; text-align: center; }
     .price-sub { display: block; font-size: 0.85rem; color: #555; font-weight: normal; margin-top: 4px; }
-    
     #grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); gap: 6px; padding: 10px; background: #f8f9fa; border: 1px solid #cfd8dc; border-radius: 12px; }
     .num { padding: 10px 2px; text-align: center; border-radius: 8px; color: #fff; cursor: pointer; font-size: 0.85rem; font-weight: bold; background: linear-gradient(135deg, #2e7d32, #1b5e20); }
     .taken { background: linear-gradient(135deg, #e53935, #b71c1c); opacity: 0.55; cursor: not-allowed; }
     .sel { background: linear-gradient(135deg, #ff9800, #e65100); }
-    
     .payment-info { margin-top: 15px; font-size: 1.05rem; line-height: 1.5; }
     .payment-info b { display: block; margin-bottom: 5px; color: #00416A; }
     .date-info { margin-top: 10px; font-weight: bold; color: #d32f2f; }
-
     input { width: 100%; padding: 12px; margin: 6px 0 16px 0; border: 1px solid #b0bec5; border-radius: 8px; }
     .btn-wa { background: linear-gradient(135deg, #25d366, #128c7e); color: #ffffff; padding: 15px; border: none; border-radius: 10px; font-weight: bold; width: 100%; font-size: 1.05rem; cursor: pointer; }
-
-    /* Estilo del Footer */
     footer { text-align: center; padding: 20px; color: #ffffff; font-size: 0.85rem; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <div class="header-text">
-      <h1>Rifa 1000 - Operación Salud</h1>
-    </div>
+    <div class="header-text"><h1>Rifa 1000 - Operación Salud</h1></div>
 
     <form id="raffleForm">
       <div class="card">
-        <div class="price-tag">
-            Valor: $10.000 COP / $3 
-            <span class="price-sub">(A tasa del Euro del día)</span>
-        </div>
+        <div class="price-tag">Valor: $10.000 COP / $3 <span class="price-sub">(A tasa del Euro del día)</span></div>
         <div id="grid"></div>
-        
         <div class="payment-info">
             <b>Métodos de Pago:</b>
             • Efectivo<br>
@@ -59,13 +45,10 @@
       <div class="card">
         <label><b>Nombre completo:</b></label>
         <input id="nombre" placeholder="Ej: María Pérez" required>
-        
         <label><b>Teléfono:</b></label>
         <input id="tel" placeholder="Ej: 04141234567" required>
-        
         <label><b>Método de pago:</b></label>
         <input id="metodo" placeholder="Ej: Efectivo / Pago Móvil / Otro" required>
-        
         <button type="submit" class="btn-wa">📲 Reservar y enviar por WhatsApp</button>
       </div>
     </form>
@@ -80,10 +63,9 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    // Actualización automática del año
     document.getElementById('year').textContent = new Date().getFullYear();
-
     const target = new Date("2026-08-21T21:50:00").getTime();
+    
     setInterval(() => {
         const diff = target - new Date().getTime();
         const d = Math.floor(diff / (1000*60*60*24));
@@ -127,9 +109,23 @@
         const metodo = document.getElementById('metodo').value;
         const boletos = seleccion.map(x => x.toString().padStart(3, '0')).join(', ');
         
+        // 1. Guardar en Firebase
         update(ref(db, 'boletos_ocupados'), seleccion.reduce((acc, n) => ({...acc, [n]: {nombre, tel, metodo}}), {}));
-        const msg = `¡Hola!👋 Muchas gracias por tu colaboración.\n\n*Datos de la reserva:*\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Boletos Reservados:*${boletos}\n*Método de pago:* ${metodo}\n\nRecuerda que tu número participa oficialmente al haber cancelado el valor del boleto. Si hiciste transferencia, por favor enviar comprobante de pago.`;
+        
+        // 2. Enviar a Google Sheets
+        const formData = new FormData();
+        formData.append('nombre', nombre);
+        formData.append('telefono', tel);
+        formData.append('boletos', boletos);
+        formData.append('metodo', metodo);
 
+        fetch('https://script.google.com/macros/s/AKfycbzlS0kDtBmMn6r2yZIASeMStE9xfgWFMn4bHs3DPo3AL2OMtOQYYXVvp6gGHhHppEg/exec', {
+            method: 'POST',
+            body: formData
+        });
+
+        // 3. Redirigir a WhatsApp
+        const msg = `¡Hola!👋 Muchas gracias por tu colaboración.\n\n*Datos de la reserva:*\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Boletos Reservados:* ${boletos}\n*Método de pago:* ${metodo}\n\nRecuerda que tu número participa oficialmente al haber cancelado el valor del boleto.`;
         window.location.href = 'https://wa.me/584247384214?text=' + encodeURIComponent(msg);
     });
   </script>
