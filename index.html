@@ -109,24 +109,24 @@
         const metodo = document.getElementById('metodo').value;
         const boletos = seleccion.map(x => x.toString().padStart(3, '0')).join(', ');
         
-        // 1. Guardar en Firebase
-        update(ref(db, 'boletos_ocupados'), seleccion.reduce((acc, n) => ({...acc, [n]: {nombre, tel, metodo}}), {}));
+        const updates = {};
+        seleccion.forEach(n => { updates[n] = { nombre, tel, metodo }; });
         
-        // 2. Enviar a Google Sheets
-        const formData = new FormData();
-        formData.append('nombre', nombre);
-        formData.append('telefono', tel);
-        formData.append('boletos', boletos);
-        formData.append('metodo', metodo);
+        update(ref(db, 'boletos_ocupados'), updates).then(() => {
+            const formData = new FormData();
+            formData.append('nombre', nombre);
+            formData.append('telefono', tel);
+            formData.append('boletos', boletos);
+            formData.append('metodo', metodo);
 
-        fetch('https://script.google.com/macros/s/AKfycbzlS0kDtBmMn6r2yZIASeMStE9xfgWFMn4bHs3DPo3AL2OMtOQYYXVvp6gGHhHppEg/exec', {
-            method: 'POST',
-            body: formData
+            fetch('https://script.google.com/macros/s/AKfycbyCzs8PTPkB8cecoWRsc5uaKi9IcgOaLmEvg6ZUv86tbMcb9QH3TYcyNKl64Ohf5O1f/exec', {
+                method: 'POST',
+                body: formData
+            });
+
+            const msg = `¡Hola!👋 Reserva exitosa.\n\nNombre: ${nombre}\nBoletos: ${boletos}\nMétodo: ${metodo}`;
+            window.location.href = 'https://wa.me/584247384214?text=' + encodeURIComponent(msg);
         });
-
-        // 3. Redirigir a WhatsApp
-        const msg = `¡Hola!👋 Muchas gracias por tu colaboración.\n\n*Datos de la reserva:*\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Boletos Reservados:* ${boletos}\n*Método de pago:* ${metodo}\n\nRecuerda que tu número participa oficialmente al haber cancelado el valor del boleto.`;
-        window.location.href = 'https://wa.me/584247384214?text=' + encodeURIComponent(msg);
     });
   </script>
 </body>
