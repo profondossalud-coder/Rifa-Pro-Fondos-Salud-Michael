@@ -3,10 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>🎟️ Rifa 1000 - Operación Salud</title>
-  
-  <!-- FUENTES: Montserrat para el título de marca y Segoe UI para el cuerpo -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+  <title>Rifa 1000</title>
   
   <style>
     * { box-sizing: border-box; }
@@ -22,31 +19,22 @@
     
     .container { max-width: 800px; margin: auto; }
     
-    /* ENCABEZADO: LOGO Y TÍTULO EN NEGRO */
+    /* ENCABEZADO: LOGO CENTRADO COMO ÚNICO ENCABEZADO */
     .brand-header { 
       display: flex; 
-      align-items: center; 
       justify-content: center; 
-      gap: 16px; 
+      align-items: center;
       margin-bottom: 25px; 
-      margin-top: 10px;
+      margin-top: 15px;
     }
     .brand-header img { 
-      width: 85px; 
+      width: 180px; 
+      max-width: 80%;
       height: auto; 
       object-fit: contain; 
       background: transparent; 
       border: none;
-      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.08));
-    }
-    .brand-header h1 { 
-      font-family: 'Montserrat', sans-serif; 
-      font-weight: 900; 
-      font-size: 2.5rem; 
-      margin: 0; 
-      color: #000000; 
-      text-transform: uppercase; 
-      letter-spacing: 1.5px; 
+      filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.12));
     }
 
     /* TARJETAS CONTENEDORAS */
@@ -59,7 +47,7 @@
       border: 1px solid #e2e8f0; 
     }
     
-    /* BLOQUE DE PRECIO Y TASA BCV AUTOMÁTICA */
+    /* BLOQUE DE PRECIO Y TASA EURO BCV AUTOMÁTICA */
     .price-tag { 
       font-size: 1.2rem; 
       color: #1b5e20; 
@@ -173,18 +161,19 @@
     .detail-label { font-size: 0.85rem; color: #64748b; }
     .detail-value { font-weight: bold; font-family: monospace; font-size: 1rem; color: #0f172a; }
     
+    /* BOTÓN SOLO ÍCONO COMPACTO */
     .copy-btn { 
       background: #f1f5f9; 
       border: 1px solid #cbd5e1; 
       border-radius: 6px; 
-      padding: 6px 10px; 
+      padding: 5px 7px; 
       cursor: pointer; 
       display: flex; 
       align-items: center; 
-      gap: 4px; 
-      font-size: 0.8rem; 
+      justify-content: center;
       color: #334155; 
       transition: all 0.2s ease; 
+      flex-shrink: 0;
     }
     .copy-btn:hover { background: #e2e8f0; }
     .copy-btn.copied { background: #22c55e; color: #ffffff; border-color: #22c55e; }
@@ -216,9 +205,9 @@
 <body>
 
   <div class="container">
+    <!-- LOGO CENTRADO COMO ÚNICO ENCABEZADO -->
     <div class="brand-header">
-      <img src="logo.png" alt="Logo Rifa 1000">
-      <h1>Rifa 1000</h1>
+      <img src="logo.png" alt="Rifa 1000">
     </div>
 
     <form id="raffleForm">
@@ -228,7 +217,7 @@
             <br>
             <div class="bcv-box">
               <span class="live-dot"></span>
-              <span id="euroRate">Pago Tasa Euro BCV: Cargando...</span>
+              <span id="euroRate">Pago Tasa Euro según el BCV: Cargando...</span>
             </div>
         </div>
         
@@ -257,11 +246,10 @@
                     <span class="detail-label">C.I.:</span>
                     <span class="detail-value" id="ci-num">21003960</span>
                   </div>
-                  <button type="button" class="copy-btn" onclick="copyToClipboard('ci-num', this)">
+                  <button type="button" class="copy-btn" title="Copiar C.I." onclick="copyToClipboard('ci-num', this)">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
                     </svg>
-                    <span>Copiar</span>
                   </button>
                 </div>
 
@@ -271,11 +259,10 @@
                     <span class="detail-label">Teléfono:</span>
                     <span class="detail-value" id="phone-num">04147179001</span>
                   </div>
-                  <button type="button" class="copy-btn" onclick="copyToClipboard('phone-num', this)">
+                  <button type="button" class="copy-btn" title="Copiar Teléfono" onclick="copyToClipboard('phone-num', this)">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
                     </svg>
-                    <span>Copiar</span>
                   </button>
                 </div>
 
@@ -305,7 +292,7 @@
     </form>
     
     <footer>
-      <p>&copy; <span id="year"></span> Rifa 1000 - Operación Salud. Todos los derechos reservados.</p>
+      <p>&copy; <span id="year"></span> Rifa 1000. Todos los derechos reservados.</p>
       <p>Programado por: <strong>@nathaliemarinvel</strong></p>
     </footer>
   </div>
@@ -315,44 +302,43 @@
     function copyToClipboard(id, btn) {
       const text = document.getElementById(id).innerText;
       navigator.clipboard.writeText(text).then(() => {
-        const originalText = btn.innerHTML;
+        const originalSvg = btn.innerHTML;
         btn.classList.add('copied');
-        btn.innerHTML = '✓ ¡Copiado!';
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
         setTimeout(() => {
           btn.classList.remove('copied');
-          btn.innerHTML = originalText;
+          btn.innerHTML = originalSvg;
         }, 1800);
       });
     }
 
-    // CONSULTA AUTOMÁTICA DE TASA EURO BCV DIARIA
+    // CONSULTA AUTOMÁTICA DE LA TASA EURO DEL BCV
     async function fetchEuroBCV() {
       const euroElem = document.getElementById('euroRate');
       
+      try {
+        const res = await fetch('https://ve.dolarapi.com/v1/euros/oficial');
+        const data = await res.json();
+        if (data && data.promedio) {
+          const valor = parseFloat(data.promedio).toFixed(2);
+          euroElem.innerText = `Pago Tasa Euro según el BCV: Bs. ${valor}`;
+          return;
+        }
+      } catch (e) {}
+
       try {
         const res = await fetch('https://pydolarve.org/api/v1/dollar?page=bcv');
         const data = await res.json();
         if (data && data.monedas && data.monedas.eur && data.monedas.eur.price) {
           const valor = parseFloat(data.monedas.eur.price).toFixed(2);
-          euroElem.innerText = `Pago Tasa Euro BCV: Bs. ${valor}`;
+          euroElem.innerText = `Pago Tasa Euro según el BCV: Bs. ${valor}`;
           return;
         }
       } catch (e) {}
 
-      try {
-        const res = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
-        const data = await res.json();
-        if (data && data.promedio) {
-          const eurEstimado = (data.promedio * 1.088).toFixed(2);
-          euroElem.innerText = `Pago Tasa Euro BCV: Bs. ${eurEstimado}`;
-          return;
-        }
-      } catch (e) {}
-
-      euroElem.innerText = `Pago Tasa Euro BCV: Consultar reporte del día`;
+      euroElem.innerText = `Pago Tasa Euro según el BCV: Consultar reporte del día`;
     }
 
-    // Ejecuta la consulta al cargar la página
     fetchEuroBCV();
   </script>
 
@@ -363,7 +349,6 @@
 
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Cuenta regresiva al sorteo del 21 de agosto
     const target = new Date("2026-08-21T21:50:00").getTime();
     setInterval(() => {
         const diff = target - new Date().getTime();
@@ -373,11 +358,9 @@
         document.getElementById("countdown").innerHTML = `(${d}d ${h}h ${m}m restantes)`;
     }, 1000);
 
-    // Inicialización de la base de datos Firebase
     const db = getDatabase(initializeApp({apiKey: "AIzaSyAkO4NC8uZOLyKnUzkEPTSWE95gslYaWes", databaseURL: "https://rifa-app-9a924-default-rtdb.firebaseio.com"}));
     let seleccion = [];
     
-    // Renderizado de números y bloqueo en tiempo real
     onValue(ref(db, 'boletos_ocupados'), (s) => {
       const bloq = s.val() ? new Set(Object.keys(s.val()).map(Number)) : new Set();
       const g = document.getElementById('grid');
@@ -401,7 +384,6 @@
         });
     }
 
-    // Proceso de reserva y redirección automática a WhatsApp
     document.getElementById('raffleForm').addEventListener('submit', function(e) {
         e.preventDefault();
         if (seleccion.length === 0) { alert("Por favor selecciona al menos un número"); return; }
