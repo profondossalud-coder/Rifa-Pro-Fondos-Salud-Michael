@@ -2,110 +2,110 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Rifa 1000 - Operación Salud</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🎟️ Rifa 1000 - Operación Salud</title>
   <style>
-    body { background: radial-gradient(circle at center, #00416A 0%, #002642 60%, #001220 100%); background-attachment: fixed; font-family: sans-serif; padding: 20px; color: #fff; }
-    .container { max-width: 600px; margin: auto; }
-    .card { background: #fff; color: #333; padding: 20px; border-radius: 15px; margin-top: 20px; }
-    .payment-info { font-size: 0.9rem; margin-bottom: 15px; }
-    .countdown-small { font-size: 0.8rem; color: #666; margin-top: 5px; }
-    #grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; margin: 10px 0; }
-    .num { padding: 8px; text-align: center; border-radius: 5px; cursor: pointer; background: #2e7d32; color: #fff; font-size: 14px; }
-    .taken { background: #e53935; cursor: not-allowed; }
-    .sel { background: #ff9800; }
-    input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
-    button { width: 100%; padding: 15px; background: #25d366; color: #fff; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle at center, #00416A 0%, #002642 60%, #001220 100%); background-attachment: fixed; margin: 0; padding: 16px; color: #2c3e50; }
+    .container { max-width: 800px; margin: auto; }
+    h1 { text-align: center; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); font-weight: 800; font-size: 1.8rem; }
+    .card { background: linear-gradient(145deg, #ffffff, #f0f2f5); padding: 20px; border-radius: 16px; margin: 16px 0; box-shadow: 0 10px 25px rgba(0,0,0,0.25); border: 1px solid #dcdfe6; }
+    .price-tag { font-size: 1.05rem; color: #1b5e20; background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 10px 14px; border-radius: 10px; display: inline-block; margin-bottom: 8px; font-weight: bold; border: 1px solid #a5d6a7; }
+    #grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); gap: 6px; padding: 10px; background: #f8f9fa; border: 1px solid #cfd8dc; border-radius: 12px; }
+    .num { padding: 10px 2px; text-align: center; border-radius: 8px; color: #fff; cursor: pointer; font-size: 0.85rem; font-weight: bold; background: linear-gradient(135deg, #2e7d32, #1b5e20); }
+    .taken { background: linear-gradient(135deg, #e53935, #b71c1c); opacity: 0.55; cursor: not-allowed; }
+    .sel { background: linear-gradient(135deg, #ff9800, #e65100); }
+    .payment-info { margin-top: 18px; font-size: 0.95rem; }
+    input { width: 100%; padding: 12px; margin: 6px 0 16px 0; border: 1px solid #b0bec5; border-radius: 8px; }
+    .btn-wa { background: linear-gradient(135deg, #25d366, #128c7e); color: #ffffff; padding: 15px; border: none; border-radius: 10px; font-weight: bold; width: 100%; font-size: 1.05rem; cursor: pointer; }
+    .countdown-small { font-size: 0.8rem; color: #555; }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <h1>🎟️ Rifa 1000 - Operación Salud</h1>
-
+  <!-- Iframe invisible para el envío del formulario -->
   <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
-  <form id="raffleForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdP90cVfchJqMyfYcxUCFYKcyNcH25auxYl7IQj9vubvfFpDQ/formResponse" method="POST" target="hidden_iframe">
-    
-    <div class="card">
-      <div class="payment-info">
-        <p>Valor: $10.000 COP / $3 por número</p>
-        <p><b>Métodos de pago:</b></p>
-        <p>• Efectivo<br>• Pago Móvil: Banco Mercantil, C.I. 21.003.960, Telf: 04147179001</p>
-        <hr>
-        <p>Fecha del sorteo: 21 de agosto</p>
-        <div id="countdown" class="countdown-small">Cargando...</div>
+  
+  <div class="container">
+    <h1>🎟️ Rifa 1000 - Operación Salud</h1>
+
+    <form id="raffleForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdP90cVfchJqMyfYcxUCFYKcyNcH25auxYl7IQj9vubvfFpDQ/formResponse" method="POST" target="hidden_iframe">
+      <div class="card">
+        <div class="price-tag">$10.000 COP / $3 (A tasa del Euro del día)</div>
+        <div id="grid"></div>
+        
+        <div class="payment-info">
+            <p>💳 <b>Métodos de Pago:</b> Efectivo y Pago Móvil (Banco Mercantil | C.I. 21.003.960 | 04147179001)</p>
+            <p>📅 Fecha del sorteo: 21 de agosto <span id="countdown" class="countdown-small"></span></p>
+        </div>
       </div>
-      <div id="grid"></div>
-    </div>
 
-    <div class="card">
-      <input name="entry.874598015" id="nombre" placeholder="Nombre completo" required>
-      <input name="entry.1349990828" id="tel" placeholder="Teléfono" required>
-      <input name="entry.866989850" id="hiddenBoletos" type="hidden">
-      <button type="submit">📲 Reservar y enviar por WhatsApp</button>
-    </div>
-  </form>
-</div>
+      <div class="card">
+        <input name="entry.874598015" id="nombre" placeholder="Nombre completo" required>
+        <input name="entry.1349990828" id="tel" placeholder="Teléfono" required>
+        <input name="entry.866989850" id="hiddenBoletos" type="hidden">
+        <button type="submit" class="btn-wa">📲 Reservar y enviar por WhatsApp</button>
+      </div>
+    </form>
+  </div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-  // Cuenta regresiva
-  const targetDate = new Date("2026-08-21T00:00:00").getTime();
-  function updateTimer() {
-    const now = new Date().getTime();
-    const distance = targetDate - now;
-    const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    document.getElementById("countdown").innerHTML = `Faltan: ${d}d ${h}h ${m}m`;
-  }
-  setInterval(updateTimer, 1000);
-  updateTimer();
+    // Contador regresivo
+    const target = new Date("2026-08-21T00:00:00").getTime();
+    setInterval(() => {
+        const d = Math.floor((target - new Date().getTime()) / (1000*60*60*24));
+        document.getElementById("countdown").innerHTML = `(Faltan ${d} días)`;
+    }, 1000);
 
-  const firebaseConfig = { apiKey: "AIzaSyAkO4NC8uZOLyKnUzkEPTSWE95gslYaWes", databaseURL: "https://rifa-app-9a924-default-rtdb.firebaseio.com" };
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-  let seleccion = [];
-  let bloqueados = new Set();
-
-  onValue(ref(db, 'boletos_ocupados'), (snapshot) => {
-    const data = snapshot.val();
-    bloqueados = data ? new Set(Object.keys(data).map(Number)) : new Set();
-    render();
-  });
-
-  function render() {
-    const g = document.getElementById('grid');
-    g.innerHTML = '';
-    for (let i = 0; i < 1000; i++) {
-      let d = document.createElement('div');
-      d.className = 'num ' + (bloqueados.has(i) ? 'taken' : (seleccion.includes(i) ? 'sel' : ''));
-      d.textContent = i.toString().padStart(3, '0');
-      d.onclick = () => {
-        if (bloqueados.has(i)) return;
-        const idx = seleccion.indexOf(i);
-        idx > -1 ? seleccion.splice(idx, 1) : seleccion.push(i);
-        render();
-      };
-      g.appendChild(d);
-    }
-  }
-
-  document.getElementById('raffleForm').addEventListener('submit', function() {
-    const nombre = document.getElementById('nombre').value;
-    const numeros = seleccion.map(x => x.toString().padStart(3, '0')).join(', ');
-    document.getElementById('hiddenBoletos').value = numeros;
+    const db = getDatabase(initializeApp({apiKey: "AIzaSyAkO4NC8uZOLyKnUzkEPTSWE95gslYaWes", databaseURL: "https://rifa-app-9a924-default-rtdb.firebaseio.com"}));
+    let seleccion = [];
     
-    const updates = {};
-    seleccion.forEach(n => updates['boletos_ocupados/' + n] = { nombre });
-    update(ref(db), updates);
+    // Cargar estado de boletos
+    onValue(ref(db, 'boletos_ocupados'), (s) => {
+      const bloq = s.val() ? new Set(Object.keys(s.val()).map(Number)) : new Set();
+      const g = document.getElementById('grid');
+      g.innerHTML = '';
+      for(let i=0; i<1000; i++) {
+        let d = document.createElement('div');
+        d.className = 'num ' + (bloq.has(i) ? 'taken' : (seleccion.includes(i) ? 'sel' : ''));
+        d.textContent = i.toString().padStart(3, '0');
+        d.onclick = () => { if(!bloq.has(i)) { 
+            const idx = seleccion.indexOf(i);
+            idx > -1 ? seleccion.splice(idx, 1) : seleccion.push(i);
+            renderizar(bloq);
+        }};
+        g.appendChild(d);
+      }
+    });
 
-    const msg = `¡Muchas gracias por tu colaboración! Recuerda enviar tu comprobante de pago.\n\nDatos:\nNombre: ${nombre}\nBoletos: ${numeros}`;
-    setTimeout(() => {
-      window.location.href = 'https://wa.me/584247384214?text=' + encodeURIComponent(msg);
-    }, 500);
-  });
-</script>
+    function renderizar(bloq) {
+        document.querySelectorAll('.num').forEach((el, i) => {
+            el.className = 'num ' + (bloq.has(i) ? 'taken' : (seleccion.includes(i) ? 'sel' : ''));
+        });
+    }
+
+    // Lógica de envío
+    document.getElementById('raffleForm').addEventListener('submit', function() {
+        const nombre = document.getElementById('nombre').value;
+        const tel = document.getElementById('tel').value;
+        const boletos = seleccion.map(x => x.toString().padStart(3, '0')).join(', ');
+        
+        document.getElementById('hiddenBoletos').value = boletos;
+        
+        // 1. Guardar en Firebase
+        update(ref(db, 'boletos_ocupados'), seleccion.reduce((acc, n) => ({...acc, [n]: {nombre, tel}}), {}));
+        
+        // 2. Definir mensaje
+        const msg = `¡Muchas gracias por tu colaboración! Recuerda que tu número participa oficialmente al haber cancelado el valor del boleto. Si hiciste transferencia, por favor enviar comprobante de pago.\n\n*Datos de la reserva:*\n*Nombre:* ${nombre}\n*Teléfono:* ${tel}\n*Boletos Reservados:* ${boletos}`;
+        
+        // 3. Esperar 1.5 segundos para que Google reciba los datos antes de redirigir
+        setTimeout(() => {
+            window.location.href = 'https://wa.me/584247384214?text=' + encodeURIComponent(msg);
+        }, 1500); 
+    });
+  </script>
 </body>
 </html>
