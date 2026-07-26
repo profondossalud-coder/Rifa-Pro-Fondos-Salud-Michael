@@ -201,24 +201,6 @@
     }
     .btn-wa:hover { opacity: 0.95; }
 
-    /* BANNER AL CANAL Y SOPORTE */
-    .channel-banner {
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      padding: 10px;
-      border-radius: 10px;
-      text-align: center;
-      margin-top: 14px;
-      font-size: 0.88rem;
-      color: #166534;
-    }
-    .channel-banner a {
-      color: #15803d;
-      font-weight: bold;
-      text-decoration: none;
-    }
-    .channel-banner a:hover { text-decoration: underline; }
-
     .support-info {
       text-align: center;
       margin-top: 14px;
@@ -322,11 +304,6 @@
         <input id="metodo" placeholder="Ej: Efectivo / Pago Móvil / Otro" required>
         
         <button type="submit" class="btn-wa">📲 Reservar y enviar por WhatsApp</button>
-        
-        <!-- BANNER AL CANAL DE WHATSAPP -->
-        <div class="channel-banner">
-          📢 Sigue los resultados en nuestro <a href="https://whatsapp.com/channel/0029VbC5mkI2ER6n5D784X0N" target="_blank">Canal de WhatsApp</a>
-        </div>
 
         <div class="support-info">
           <span>💬 ¿Dudas o preguntas?</span>
@@ -356,33 +333,44 @@
       });
     }
 
-    // CONSULTA AUTOMÁTICA DE TASA EURO SEGÚN EL BCV Y FUENTES DE REFERENCIA (MONITOR DE DIVISAS)
+    // CONSULTA ULTRASÓNICA MULTIHILO Y SIN CACHÉ DE LA TASA EURO BCV
     async function fetchEuroBCV() {
       const euroElem = document.getElementById('euroRate');
-      
-      try {
-        const res = await fetch('https://pydolarve.org/api/v1/dollar?page=bcv');
-        const data = await res.json();
-        if (data && data.monedas && data.monedas.eur && data.monedas.eur.price) {
-          const valor = parseFloat(data.monedas.eur.price).toFixed(2);
-          euroElem.innerText = `Pago Tasa Euro según el BCV: Bs. ${valor}`;
-          return;
-        }
-      } catch (e) {}
+      const timestamp = new Date().getTime();
+
+      // Definición de APIs en tiempo real
+      const api1 = fetch(`https://ve.dolarapi.com/v1/euros/oficial?_t=${timestamp}`, { cache: 'no-store' })
+        .then(r => r.json())
+        .then(d => {
+          const val = d.promedio || d.precio;
+          if (val && !isNaN(val)) return parseFloat(val).toFixed(2);
+          throw new Error();
+        });
+
+      const api2 = fetch(`https://pydolarve.org/api/v1/dollar?page=bcv&_t=${timestamp}`, { cache: 'no-store' })
+        .then(r => r.json())
+        .then(d => {
+          if (d?.monedas?.eur?.price) return parseFloat(d.monedas.eur.price).toFixed(2);
+          throw new Error();
+        });
+
+      const api3 = fetch(`https://monitordevisasvenezuela.com/api/v1/rates?_t=${timestamp}`, { cache: 'no-store' })
+        .then(r => r.json())
+        .then(d => {
+          if (d?.eur || d?.euro) return parseFloat(d.eur || d.euro).toFixed(2);
+          throw new Error();
+        });
 
       try {
-        const res = await fetch('https://ve.dolarapi.com/v1/euros/oficial');
-        const data = await res.json();
-        if (data && data.promedio) {
-          const valor = parseFloat(data.promedio).toFixed(2);
-          euroElem.innerText = `Pago Tasa Euro según el BCV: Bs. ${valor}`;
-          return;
-        }
-      } catch (e) {}
-
-      euroElem.innerText = `Pago Tasa Euro según el BCV: Consultar reporte del día`;
+        // La primera API que responda con éxito en milisegundos actualiza la pantalla de inmediato
+        const fastResult = await Promise.any([api1, api2, api3]);
+        euroElem.innerText = `Pago Tasa Euro según el BCV: Bs. ${fastResult}`;
+      } catch (e) {
+        euroElem.innerText = `Pago Tasa Euro según el BCV: Consultar reporte oficial`;
+      }
     }
 
+    // Ejecuta inmediatamente al cargar la página
     fetchEuroBCV();
   </script>
 
