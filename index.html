@@ -2,206 +2,345 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gran Rifa Solidaria</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rifa 1000</title>
+  
   <style>
-    :root {
-      --primary: #15803d;
-      --primary-hover: #166534;
-      --bg-color: #f8fafc;
-      --card-bg: #ffffff;
-      --text-color: #1e293b;
-      --border-color: #cbd5e1;
+    * { box-sizing: border-box; }
+    
+    /* FONDO NOBLE: VERDE SUAVE ESPERANZA Y SALUD */
+    body { 
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; 
+      background-color: #f0f7f4; 
+      margin: 0; 
+      padding: 4px 12px 15px 12px; 
+      color: #1e293b; 
     }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 600px;
-      background: var(--card-bg);
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    }
-
-    h1, h2 {
-      text-align: center;
-      color: var(--primary);
-    }
-
-    .info-box {
-      background: #f1f5f9;
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      text-align: center;
-      font-size: 0.95rem;
-    }
-
-    .euro-rate {
-      font-weight: bold;
-      color: #b91c1c;
-      margin-top: 5px;
-    }
-
-    .countdown {
-      font-size: 0.9rem;
-      color: #64748b;
-      margin-top: 4px;
-    }
-
-    /* GRILLA DE BOLETOS */
-    .grid-container {
-      max-height: 250px;
-      overflow-y: auto;
-      border: 1px solid var(--border-color);
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
-      gap: 6px;
-      background: #fafafa;
-    }
-
-    .num {
-      aspect-ratio: 1;
-      display: flex;
+    
+    .container { max-width: 800px; margin: auto; }
+    
+    /* ENCABEZADO: LOGO CENTRADO Y COMPACTO */
+    .brand-header { 
+      display: flex; 
+      justify-content: center; 
       align-items: center;
+      margin-top: 2px; 
+      margin-bottom: 2px; 
+    }
+    .brand-header img { 
+      width: 200px; 
+      max-width: 80%;
+      height: auto; 
+      object-fit: contain; 
+      background: transparent; 
+      border: none;
+      filter: drop-shadow(0 4px 10px rgba(15, 23, 42, 0.08));
+    }
+
+    /* TARJETAS NOBLES Y LIMPIAS */
+    .card { 
+      background: #ffffff; 
+      padding: 14px 20px; 
+      border-radius: 16px; 
+      margin: 6px 0; 
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.04); 
+      border: 1px solid #e2e8f0; 
+    }
+    
+    /* BLOQUE DE PRECIO Y TASA EURO AUTOMATIZADA */
+    .price-tag { 
+      font-size: 1.15rem; 
+      color: #0f5132; 
+      background: linear-gradient(135deg, #e8f5e9, #d1e7dd); 
+      padding: 12px; 
+      border-radius: 12px; 
+      display: block; 
+      margin-bottom: 10px; 
+      font-weight: bold; 
+      border: 1px solid #badbcc; 
+      text-align: center; 
+    }
+    
+    .bcv-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+      font-size: 0.95rem;
+      background: #ffffff;
+      color: #0f172a;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid #0f172a;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .live-dot {
+      width: 9px;
+      height: 9px;
+      background-color: #198754;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 8px #198754;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(25, 135, 84, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(25, 135, 84, 0); }
+    }
+
+    /* GRILLA DE NÚMEROS LOTERÍA */
+    #grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); 
+      gap: 6px; 
+      padding: 10px; 
+      background: #f8fafc; 
+      border: 1px solid #cbd5e1; 
+      border-radius: 12px; 
+    }
+    .num { 
+      padding: 10px 2px; 
+      text-align: center; 
+      border-radius: 8px; 
+      color: #fff; 
+      cursor: pointer; 
+      font-size: 0.85rem; 
+      font-weight: bold; 
+      background: linear-gradient(135deg, #15803d, #0f5132); 
+      transition: transform 0.1s ease;
+    }
+    .num:hover { transform: scale(1.04); }
+    .taken { background: linear-gradient(135deg, #dc2626, #991b1b) !important; opacity: 0.55; cursor: not-allowed; transform: none !important; }
+    .sel { background: linear-gradient(135deg, #d97706, #b45309) !important; }
+    
+    /* MÉTODOS DE PAGO */
+    .payment-container { margin-top: 12px; }
+    .payment-title { font-weight: bold; color: #0f172a; margin-bottom: 8px; font-size: 1.05rem; }
+    
+    .payment-methods-list { display: flex; flex-direction: column; gap: 8px; }
+    
+    .method-item { 
+      background: #f8fafc; 
+      border: 1px solid #cfd8dc; 
+      border-radius: 10px; 
+      padding: 10px 12px; 
+    }
+    
+    .method-header { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      margin-bottom: 6px; 
+      font-weight: bold; 
+      color: #0f172a;
+    }
+    
+    .bank-badge { 
+      background: #e2e8f0; 
+      color: #0f172a; 
+      font-size: 0.8rem; 
+      padding: 2px 8px; 
+      border-radius: 6px; 
+      font-weight: 600;
+    }
+    
+    .detail-row { 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      background: #ffffff; 
+      padding: 6px 12px; 
+      border-radius: 8px; 
+      margin-top: 4px; 
+      border: 1px solid #e2e8f0; 
+    }
+    
+    .detail-info { display: flex; align-items: center; gap: 8px; }
+    .detail-label { font-size: 0.85rem; color: #64748b; }
+    .detail-value { font-weight: bold; font-family: monospace; font-size: 1rem; color: #0f172a; }
+    
+    /* BOTÓN COPIAR DISCRETO */
+    .copy-btn { 
+      background: #f1f5f9; 
+      border: 1px solid #cbd5e1; 
+      border-radius: 6px; 
+      padding: 5px 7px; 
+      cursor: pointer; 
+      display: flex; 
+      align-items: center; 
       justify-content: center;
-      background: #e2e8f0;
-      border-radius: 4px;
-      font-size: 0.85rem;
-      font-weight: bold;
-      cursor: pointer;
-      user-select: none;
-      transition: all 0.2s;
+      color: #334155; 
+      transition: all 0.2s ease; 
+      flex-shrink: 0;
     }
+    .copy-btn:hover { background: #e2e8f0; }
+    .copy-btn.copied { background: #16a34a; color: #ffffff; border-color: #16a34a; }
 
-    .num:hover {
-      background: #cbd5e1;
+    .date-info { margin-top: 10px; font-weight: bold; color: #b91c1c; text-align: center; }
+
+    /* FORMULARIO Y BOTONES */
+    label { font-size: 0.92rem; color: #334155; }
+    input { width: 100%; padding: 10px; margin: 4px 0 12px 0; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; }
+    input:focus { outline: none; border-color: #15803d; }
+
+    .btn-wa { 
+      background: linear-gradient(135deg, #16a34a, #15803d); 
+      color: #ffffff; 
+      padding: 13px; 
+      border: none; 
+      border-radius: 10px; 
+      font-weight: bold; 
+      width: 100%; 
+      font-size: 1.05rem; 
+      cursor: pointer; 
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
     }
+    .btn-wa:hover { opacity: 0.95; }
 
-    .num.sel {
-      background: var(--primary);
-      color: white;
-    }
-
-    .num.taken {
-      background: #94a3b8;
-      color: #cbd5e1;
-      cursor: not-allowed;
-      text-decoration: line-through;
-    }
-
-    /* FORMULARIO */
-    form {
+    .support-info {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 0.92rem;
+      color: #475569;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      align-items: center;
+      gap: 2px;
     }
-
-    label {
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-
-    input, select {
-      padding: 10px;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      font-size: 1rem;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    button.submit-btn {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 12px;
-      font-size: 1rem;
+    .support-info a {
+      color: #15803d;
       font-weight: bold;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.2s;
-      margin-top: 10px;
+      text-decoration: none;
+      font-size: 1rem;
     }
+    .support-info a:hover { text-decoration: underline; }
 
-    button.submit-btn:hover {
-      background: var(--primary-hover);
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 25px;
-      font-size: 0.8rem;
-      color: #64748b;
-    }
+    footer { text-align: center; padding: 12px; color: #64748b; font-size: 0.85rem; margin-top: 15px; border-top: 1px solid #cbd5e1; }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <h1>Gran Rifa Solidaria</h1>
-    
-    <div class="info-box">
-      <div>Selecciona tu(s) número(s) favorito(s) de la lista inferior</div>
-      <div id="euroRate" class="euro-rate">Cargando Tasa Euro...</div>
-      <div id="countdown" class="countdown"></div>
+    <!-- LOGO CENTRADO Y COMPACTO -->
+    <div class="brand-header">
+      <img src="logo.png" alt="Rifa 1000">
     </div>
 
-    <!-- GRILLA DE 1000 BOLETOS -->
-    <label>Boletos (000 - 999):</label>
-    <div id="grid" class="grid-container"></div>
-
-    <!-- FORMULARIO DE RESERVA -->
     <form id="raffleForm">
-      <div>
-        <label for="nombre">Nombre y Apellido:</label>
-        <input type="text" id="nombre" required placeholder="Ej. María Pérez">
+      <div class="card">
+        <div class="price-tag">
+            Valor: $10.000 COP / $3 
+            <br>
+            <div class="bcv-box">
+              <span class="live-dot"></span>
+              <span id="euroRate">Tasa Euro BCV: Cargando...</span>
+            </div>
+        </div>
+        
+        <div id="grid"></div>
+        
+        <!-- MÉTODOS DE PAGO -->
+        <div class="payment-container">
+            <div class="payment-title">Métodos de Pago:</div>
+            <div class="payment-methods-list">
+              
+              <!-- Efectivo -->
+              <div class="method-item">
+                💵 <strong>Efectivo</strong>
+              </div>
+
+              <!-- Pago Móvil -->
+              <div class="method-item">
+                <div class="method-header">
+                  <span>📲 Pago Móvil</span>
+                  <span class="bank-badge">Banco Mercantil</span>
+                </div>
+
+                <!-- Cédula -->
+                <div class="detail-row">
+                  <div class="detail-info">
+                    <span class="detail-label">C.I.:</span>
+                    <span class="detail-value" id="ci-num">21003960</span>
+                  </div>
+                  <button type="button" class="copy-btn" title="Copiar C.I." onclick="copyToClipboard('ci-num', this)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- Teléfono -->
+                <div class="detail-row">
+                  <div class="detail-info">
+                    <span class="detail-label">Teléfono:</span>
+                    <span class="detail-value" id="phone-num">04147179001</span>
+                  </div>
+                  <button type="button" class="copy-btn" title="Copiar Teléfono" onclick="copyToClipboard('phone-num', this)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                    </svg>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="date-info">📅 Sorteo: 21 de agosto. <span id="countdown"></span></div>
+        </div>
       </div>
 
-      <div>
-        <label for="tel">Teléfono / WhatsApp:</label>
-        <input type="tel" id="tel" required placeholder="Ej. 04121234567">
-      </div>
+      <div class="card">
+        <label><b>Nombre completo:</b></label>
+        <input id="nombre" placeholder="Ej: María Pérez" required>
+        
+        <label><b>Teléfono:</b></label>
+        <input id="tel" placeholder="Ej: 04141234567" required>
+        
+        <label><b>Método de pago:</b></label>
+        <input id="metodo" placeholder="Ej: Efectivo / Pago Móvil / Otro" required>
+        
+        <button type="submit" class="btn-wa">📲 Reservar y enviar por WhatsApp</button>
 
-      <div>
-        <label for="metodo">Método de Pago:</label>
-        <select id="metodo">
-          <option value="Pago Móvil">Pago Móvil</option>
-          <option value="Zelle">Zelle</option>
-          <option value="Efectivo">Efectivo</option>
-          <option value="Binance">Binance</option>
-        </select>
+        <div class="support-info">
+          <span>💬 ¿Dudas o preguntas?</span>
+          <a href="https://wa.me/584247384214" target="_blank">+58 424-7384214</a>
+        </div>
       </div>
-
-      <button type="submit" class="submit-btn">Reservar por WhatsApp</button>
     </form>
-
+    
     <footer>
-      &copy; <span id="year">2026</span> - Todos los derechos reservados.
+      <p>&copy; <span id="year"></span> Rifa 1000. Todos los derechos reservados.</p>
+      <p>Programado por: <strong>@nathaliemarinvel</strong></p>
     </footer>
   </div>
 
-  <!-- LÓGICA DE FIREBASE (BOLETOS + TASA EURO EN TIEMPO REAL) -->
+  <script>
+    // COPIAR AL PORTAPAPELES
+    function copyToClipboard(id, btn) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const originalSvg = btn.innerHTML;
+        btn.classList.add('copied');
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.innerHTML = originalSvg;
+        }, 1800);
+      });
+    }
+  </script>
+
+  <!-- LÓGICA DE AUTOMATIZACIÓN DE TASA DE EURO Y FIREBASE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // TEMPORIZADOR DEL SORTEO
     const target = new Date("2026-08-21T21:50:00").getTime();
     setInterval(() => {
         const diff = target - new Date().getTime();
@@ -211,25 +350,26 @@
         document.getElementById("countdown").innerHTML = `(${d}d ${h}h ${m}m restantes)`;
     }, 1000);
 
-    // INICIALIZACIÓN DE FIREBASE
-    const db = getDatabase(initializeApp({
-      apiKey: "AIzaSyAkO4NC8uZOLyKnUzkEPTSWE95gslYaWes", 
-      databaseURL: "https://rifa-app-9a924-default-rtdb.firebaseio.com"
-    }));
-
-    // 1. LECTURA DE LA TASA DEL EURO EN TIEMPO REAL DESDE FIREBASE
-    const euroElem = document.getElementById('euroRate');
-    onValue(ref(db, 'config/tasa_euro'), (snapshot) => {
-      const val = snapshot.val();
-      if (val) {
-        const valorFormateado = parseFloat(val).toFixed(2).replace('.', ',');
-        euroElem.innerText = `Pago Tasa Euro según el BCV: Bs. ${valorFormateado}`;
-      } else {
-        euroElem.innerText = `Pago Tasa Euro según el BCV: Consultar reporte del día`;
+    // AUTOMATIZACIÓN DE LA TASA DEL EURO (CONSULTA API PÚBLICA EN TIEMPO REAL)
+    async function cargarTasaEuro() {
+      const euroElem = document.getElementById('euroRate');
+      try {
+        const response = await fetch('https://ve.dolarapi.com/v1/euros/bcv');
+        const data = await response.json();
+        if (data && data.promedio) {
+          const tasaVal = parseFloat(data.promedio).toFixed(2).replace('.', ',');
+          euroElem.innerText = `Tasa Euro BCV: Bs. ${tasaVal}`;
+        } else {
+          euroElem.innerText = `Tasa Euro BCV: Consultar tasa oficial`;
+        }
+      } catch (error) {
+        euroElem.innerText = `Tasa Euro BCV: Automática activa`;
       }
-    });
+    }
+    cargarTasaEuro();
 
-    // 2. GESTIÓN DE BOLETOS
+    const db = getDatabase(initializeApp({apiKey: "AIzaSyAkO4NC8uZOLyKnUzkEPTSWE95gslYaWes", databaseURL: "https://rifa-app-9a924-default-rtdb.firebaseio.com"}));
+    
     let seleccion = [];
     
     onValue(ref(db, 'boletos_ocupados'), (s) => {
@@ -255,7 +395,6 @@
         });
     }
 
-    // 3. ENVÍO DEL FORMULARIO Y RESERVA EN FIREBASE
     document.getElementById('raffleForm').addEventListener('submit', function(e) {
         e.preventDefault();
         if (seleccion.length === 0) { alert("Por favor selecciona al menos un número"); return; }
@@ -271,6 +410,5 @@
         window.location.href = 'https://wa.me/584247384214?text=' + encodeURIComponent(msg);
     });
   </script>
-
 </body>
 </html>
